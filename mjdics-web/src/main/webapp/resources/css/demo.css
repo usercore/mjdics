@@ -1,0 +1,196 @@
+﻿.fz12{font-size:12px;}
+input{padding: 3px 5px; vertical-align:middle;}
+.main{padding-bottom:60px; padding-top:36px;}
+.main h1,
+.main h2,
+.main h3{padding-left:10px;}
+.main h1{text-align:center;color: #212222; font-family: "microsoft yahei"; font-size: 36px; font-weight: normal; line-height: 2em; margin-bottom: 36px;}
+.main h2{background-color:#eee; line-height:2!important;}
+.main h3{font-size:20px; margin-bottom:10px;}
+.lireset2{padding-left:10px;}
+.detailform,
+.registerform{margin-bottom:5px;}
+
+.detailform .need,
+.registerform .need{
+	width:10px;
+	color:#b20202;
+}
+.detailform td,
+.registerform td{
+	align: center;
+	padding:5px 0;
+	vertical-align:middle;
+	text-align:left;
+}
+
+#imageArea{
+	align: center;
+	padding:5px 0;
+	vertical-align:middle;
+	text-align:left;
+}
+.detailform .inputxt,.detailform textarea,
+.registerform .inputxt,.registerform textarea{
+	border:1px solid #a5aeb6;
+	width:256px;
+	padding:4px 2px;
+}
+.detailform textarea,
+.registerform textarea{
+	height:75px;
+}
+.detailform label,
+.registerform label{
+	margin:0 15px 0 4px;
+}
+
+.detailform .tip,
+.registerform .tip{
+	line-height:20px;
+	color:#5f6a72;
+}
+.detailform select,
+.registerform select{
+	width:202px;
+}
+.detailformalter select,
+.registerformalter select{
+	width:124px;
+}
+.swfupload{
+	vertical-align:top;
+}
+.passwordStrength{
+
+}
+.passwordStrength b{
+	font-weight:normal;
+}
+.passwordStrength b,.passwordStrength span{
+	display:inline-block; 
+	vertical-align:middle;
+	line-height:16px;
+	line-height:18px\9;
+	height:16px;
+}
+.passwordStrength span{
+	width:45px; 
+	text-align:center; 
+	background-color:#d0d0d0; 
+	border-right:1px solid #fff;
+}
+.passwordStrength .last{
+	border-right:none;
+}
+.passwordStrength .bgStrength{
+	color:#fff;
+	background-color:#71b83d;
+}
+#demo1 .passwordStrength{
+	margin-left:8px;
+}
+.tipmsg{
+	padding:0 10px;
+}
+textarea{
+	overflow:auto;
+	resize:none;
+}
+
+.btnSimple{background-color:#EFEFEF; border:1px solid #CCC; line-height:16px; font-size:13px; padding:0px 10px;}
+.btnSimple:hover{background-color:#666; border:1px solid #CCC; color:#FFF;}
+
+
+.wp_syntax {
+  color: #100;
+  background-color: #f9f9f9;
+  border: 1px solid #e1e1e1;
+  margin: 0 0 8px 0;
+  overflow: auto;
+}
+
+/* IE FIX */
+.wp_syntax {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: expression(this.scrollWidth > this.offsetWidth ? 15 : 0);
+}
+
+.wp_syntax table {
+  border-collapse: collapse;
+}
+
+.wp_syntax div, .wp_syntax td {
+  vertical-align: top;
+  padding: 2px 4px;
+}
+
+.wp_syntax .line_numbers {
+  text-align: right;
+  background-color: #def;
+  color: gray;
+  overflow: visible;
+}
+
+/* potential overrides for other styles */
+.wp_syntax pre {
+  margin: 0;
+  width: auto;
+  float: none;
+  clear: none;
+  overflow: visible;
+  font-size: 12px;
+  line-height: 1.333;
+  white-space: pre;
+}
+
+
+body {
+	background-color: white;
+	padding: 0;
+	text-align: center;
+}
+.background {
+	display: block;
+	width: 100%;
+	height: 100%;
+	opacity: 0.4;
+	filter: alpha(opacity=40);
+	background: while;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2000;
+}
+
+.progressBar {
+	border: solid 2px #86A5AD;
+	background: white no-repeat 10px 10px;
+}
+
+.progressBar {
+	display: block;
+	width: 148px;
+	height: 28px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -74px;
+	margin-top: -14px;
+	padding: 10px 10px 10px 50px;
+	text-align: left;
+	line-height: 27px;
+	font-weight: bold;
+	position: absolute;
+	z-index: 2001;
+}
+
+
+/* 信息条 */
+ul, li {list-style: none; padding: 0; margin: 0;}
+#breadcrumb {height: 21px; background: #C7C7C7 url(../images/bg_breadcrumb.png) repeat-x top; margin: 0 0; padding: 0 0; border-top: 1px solid #7fcbeb; border-bottom: 1px solid #fff; padding: 12px 8 8px 20px; text-shadow: 1px 1px 1px #e4e4e4;}
+#breadcrumb li {float: left; padding-right: 5px;}
+#breadcrumb li.current {font-weight: 700; font-size: 14px;}
+#breadcrumb a {color: #666; text-decoration: none;}
+#breadcrumb a:hover {color: #333;}

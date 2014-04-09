@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="gb2312"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta http-equiv="Content-Language" content="zh-CN" />
+<meta content="all" name="robots" />
+<title>表单验证类 Validator v4.0生成工具</title>
+<script type="text/javascript" src="../js/mootools.js" charset="gb2312"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+(function(ns){
+ns.Form = new Class({
+		Implements : Options,
+		options : {
+			form : null,
+			configs : 'tag',
+			triggers : 'submit, blur',
+			warns : 'follow',
+			step : false,
+			wait : false,
+			ignoreOldEvent : true
+	},
+	initialize : function(options){
+		this.setOptions(options);
+	},
+	generate : function(id){
+		var code = [];
+		code.push('Validator.setup({');
+		code.push('form : "' + this.options.form + '",');
+		code.push('configs : "' +  this.options.configs + '",');
+		code.push('warns : "' + this.options.warns + '",');
+		code.push('triggers : "' +this.options.triggers + '",');
+		code.push('step : ' +  this.options.step + ',');
+		code.push('wait : ' + this.options.wait + ',');
+		code.push('ignoreOldEvent : ' +this.options.ignoreOldEvent + ',');
+		code.push('});');
+		$(id).value = code.join('\n');
+	}
+});
+})(g={});
+function gv(n){
+	var els = document.getElementsByName(n);
+	var v = [];
+	for(var i = 0, l = els.length; i < l; i ++) if(els[i].checked) v.push(els[i].value);
+	return v.join(',');
+}
+function gf(){
+	var formID = $('formID').value;
+	var configs = gv('configs');
+	var triggers = gv('triggers');
+	var warns = gv('warns');
+	var step = $('step').checked;
+	var wait = $('wait').checked;
+	var ignoreOldEvent = $('ignoreOldEvent').checked;
+	var form = new g.Form({form : formID, configs : configs, triggers : triggers, warns : warns, step : step, wait : wait, ignoreOldEvent : ignoreOldEvent});
+	form.generate('setup');
+}
+/*]]>*/
+</script>
+</head>
+<body>
+	<fieldset>
+		<legend>
+			表单验证 Validator v4.0 生成工具
+		</legend>
+<table width="408" border="1">
+  <tr>
+    <td width="475">表单配置</td>
+  </tr>
+  <tr>
+    <td><p> <label>表单ID： <input type="text" id="formID" value="demo" />
+      </label>
+    </p>
+    <p>配置方式：        
+      <label><input name="configs" type="checkbox" value="tag" checked="checked" />
+      自定义标签</label>
+      <label><input name="configs" type="checkbox" value="attribute" checked="checked" />
+      自定义属性</label>
+      <label><input name="configs" type="checkbox" value="json" checked="checked" />
+      JSON</label>
+      <label><input name="configs" type="checkbox" value="xml" checked="checked" />
+      XML</label>
+    </p>
+    <p>触发方式：
+      <label><input name="triggers" type="checkbox" value="submit" checked="checked" />
+      提交</label>
+      <label><input name="triggers" type="checkbox" value="blur" checked="checked" />
+      失焦</label>
+    </p>
+    <p>信息提示：
+      <label><input name="warns" type="checkbox" value="alert" checked="checked" />
+      警告</label>
+      <label><input name="warns" type="checkbox" value="class" checked="checked" />
+      样式</label>
+      <label><input name="warns" type="checkbox" value="color" checked="checked" />
+      颜色</label>
+      <label><input name="warns" type="checkbox" value="follow" checked="checked" />
+      跟随</label>
+      <label><input name="warns" type="checkbox" value="summary" checked="checked" />
+      汇总</label>
+      <label><input name="warns" type="checkbox" value="tips" checked="checked" />
+      浮动</label>
+    </p>
+    <p>是否单步：
+      <input type="checkbox" id="step" />
+    </p>
+    <p>是否等待：
+      <input type="checkbox" id="wait" />
+    </p>
+    <p>忽略原事件：
+      <input type="checkbox" id="ignoreOldEvent" checked="checked" />
+    </p>
+    <p>事件：</p>
+    <p>
+      <input type="button" value="生成" onclick="gf()" />
+    </p></td>
+  </tr>
+  <tr>
+    <td>代码拷贝框：      
+      <textarea id="setup" cols="55" rows="10"></textarea>
+    <br /></td>
+  </tr>
+</table>
+</fieldset>
+</body>
+</html>

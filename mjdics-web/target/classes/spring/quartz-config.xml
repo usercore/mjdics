@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<!--同步系统时间 -->
+	<bean id="selectByBettask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	    <property name="targetObject" ref="betInfoService"></property>
+	    <property name="targetMethod" value="selectByBet"></property>
+	    <property name="concurrent" value ="false"></property>        
+	</bean>
+	<!-- 定义触发的时间 -->
+	<bean id="selectByBetStatus" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="selectByBettask"></property>
+        <property name="cronExpression" value="0 0/1 8-23 * * ?"/>
+	</bean>
+	
+	
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  --> 
+    <bean id="selectByBetQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+        <property name="triggers"> 
+            <list> 
+                <ref bean="selectByBetStatus"/>
+            </list> 
+        </property> 
+        <property name="schedulerName" value="schedulerGroup1" />
+        <property name="autoStartup" value="false" />
+    </bean> 	 
+</beans>

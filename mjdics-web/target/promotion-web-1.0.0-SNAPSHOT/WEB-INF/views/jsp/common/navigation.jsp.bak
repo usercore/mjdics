@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<%
+  response.setHeader("Cache-Control","no-cache");
+  response.setHeader("Pragma","no-cache");
+  response.setDateHeader("Expires",0);
+%>
+<base href="${siteContext}" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Navigation</title>
+<link rel="stylesheet" href="${siteContext}plugin/ztree/css/zTreeStyle/zTreeStyle.css" type="text/css"/>
+<style>
+	body {
+	background-color: white;
+	margin:0; padding:0;
+	text-align: center;
+	}
+	div, p, table, th, td {
+		list-style:none;
+		margin:0; padding:0;
+		color:#333; font-size:12px;
+		font-family:dotum, Verdana, Arial, Helvetica, AppleGothic, sans-serif;
+	}
+	#testIframe {margin-left: 10px;}
+  </style>
+<script type="text/javascript" src="${siteContext}js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="${siteContext}plugin/ztree/js/jquery.ztree.core-3.2.js"></script>
+<script type="text/javascript" src="${siteContext}plugin/ztree/js/jquery.ztree.excheck-3.2.js"></script>
+<script type="text/javascript">
+		<!--
+		var setting = {
+			view: {
+				selectedMulti: false
+			},
+			async: {
+				enable: true,
+				url:"${siteContext}lottery/login?action=jsonMenu",
+				autoParam:["id", "name", "level"],
+				otherParam:{"chk":"chk"},
+				dataFilter: dataFilter
+			},
+			check:{
+				enable: true,
+				chkStyle: "checkbox",
+				chkboxType: {"Y":"ps", "N":"ps"},
+				autoCheckTrigger: true,
+				nocheckInherit: true
+			},
+			callback: {
+				onCheck: onCheck,
+				onAsyncSuccess: onAsyncSuccess
+			}
+		};
+
+		function dataFilter(treeId, parentNode, childNodes) {
+			if (parentNode != null && parentNode.checkedEx === true) {
+				for(var i=0, l=childNodes.length; i<l; i++) {
+					childNodes[i].checked = parentNode.checked;
+					childNodes[i].halfCheck = false;
+					childNodes[i].checkedEx = true;
+				}
+			}
+			return childNodes;
+		}
+		
+		function onAsyncSuccess(event, treeId, treeNode, msg) {
+			cancelHalf(treeNode);
+			rebuildInfo();
+		}
+		
+		function onCheck(e, treeId, treeNode) {
+			cancelHalf(treeNode)
+			treeNode.checkedEx = true;
+			rebuildInfo();
+		}
+
+		function rebuildInfo(){
+			var ids="";
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			var checkedNodes = zTree.getCheckedNodes(true);
+
+			for(var i = 0; i < checkedNodes.length; i ++){
+				ids = ids + checkedNodes[i].id + ",";
+			}
+			$("#checkCount").text(checkedNodes.length + "-" + ids);
+		}
+		
+		function cancelHalf(treeNode) {
+			if (treeNode.checkedEx) return;
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			treeNode.halfCheck = false;
+			zTree.updateNode(treeNode);			
+		}
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting);
+		});
+
+		function loadReady() {
+			var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+			htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+			maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+			h = demoIframe.height() >= maxH ? minH:maxH ;
+			if (h < 530) h = 530;
+			demoIframe.height(h);
+
+		}
+		//-->
+</script>
+</head>
+
+<body>
+<TABLE border=0 height=600px align=left>
+	<TR>
+		<TD width=260px align=left valign=top style="BORDER-RIGHT: #999999 1px dashed">
+		<ul id="treeDemo" class="ztree"></ul>
+		
+		<li>当前被勾选的节点ID: <span id="checkCount" class="highlight_red"></span></li>
+		</TD>
+		<TD width=770px align=left valign=top><IFRAME ID="mainIframe" Name="mainIframe" FRAMEBORDER=0 SCROLLING=AUTO width=100%  height=600px SRC="" onload="loadReady();" ></IFRAME></TD>
+	</TR>
+</TABLE>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+@charset "UTF-8";
+/* CSS Document */
+
+ul.MenuBarHorizontal{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	cursor: default;
+	width:100%;
+}
+
+ul.MenuBarActive{
+	z-index:1000;
+}
+
+ul.MenuBarHorizontal li{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	position: relative;
+	text-align: left;
+	cursor: pointer;
+	width: 75px;
+	float: left;
+}
+
+ul.MenuBarHorizontal ul{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	font-size: 12px;
+	z-index: 1020;
+	cursor: default;
+	width: 75px;
+	position: absolute;
+	left: -1000em;
+}
+
+ul.MenuBarHorizontal ul.MenuBarSubmenuVisible{
+	left: auto;
+}
+
+ul.MenuBarHorizontal ul li{
+	width: 75px;
+}
+
+ul.MenuBarHorizontal ul ul{
+	position: absolute;
+	margin: -5% 0 0 95%;
+}
+
+ul.MenuBarHorizontal ul.MenuBarSubmenuVisible ul.MenuBarSubmenuVisible{
+	left: auto;
+	top: 0;
+}
+
+
+
+/*下拉位置*/
+ul.MenuBarHorizontal ul{
+	border: 1px solid #202020;
+	margin-left:-1px;
+	background-color:#FC0;
+}
+
+ul.MenuBarHorizontal a{
+	display: block;
+	cursor: pointer;
+	background-color: #303030;
+	padding: 7px 4px;
+	color: #999;
+	text-decoration: none;
+}
+
+/*123级划过*/
+ul.MenuBarHorizontal a:hover{   
+	background-color: #ffd800;
+	color: #333;
+}
+
+ul.MenuBarHorizontal a:focus{
+	font-weight:bold;
+	}
+
+
+/*二级*/
+ul.MenuBarHorizontal a.MenuBarItemHover{
+	background-color: #ffd800;
+	color: #333;
+} 
+
+ul.MenuBarHorizontal a.MenuBarSubmenuVisible{
+	background-color: #ffd800;
+	color: #333;
+}
+
+/*一级*/
+ul.MenuBarHorizontal a.MenuBarItemSubmenuHover{
+	background-color: #ffd800;
+	color: #333;
+	
+	}
+
+
+ul.MenuBarHorizontal a.MenuBarItemSubmenu{
+	background-image: url(../media_images/SpryMenuBarDown.gif);
+	background-repeat: no-repeat;
+	background-position: 90% 50%;
+}
+
+ul.MenuBarHorizontal ul a.MenuBarItemSubmenu{
+	background-image: url(../media_images/SpryMenuBarRight.gif);
+	background-repeat: no-repeat;
+	background-position: 90% 50%;
+}
+
+
+ul.MenuBarHorizontal a.MenuBarItemSubmenuHover{
+	background-image: url(../media_images/SpryMenuBarDownHover.gif);
+	background-repeat: no-repeat;
+	background-position: 90% 50%;
+}
+
+
+ul.MenuBarHorizontal ul a.MenuBarItemSubmenuHover{
+	background-image: url(../media_images/SpryMenuBarRightHover.gif);
+	background-repeat: no-repeat;
+	background-position: 90% 50%;
+}
+
+
+ul.MenuBarHorizontal iframe{
+	position: absolute;
+	z-index: 1010;
+	filter:alpha(opacity:0.1);
+}
+
+@media screen, projection{
+	ul.MenuBarHorizontal li.MenuBarItemIE
+	{
+		display: inline;
+		f\loat: left;
+		background: #FFF;
+	}
+}

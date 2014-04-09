@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="opps-v2">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <dependent-module archiveName="opps-admin-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-admin/opps-admin">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opps-policy-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-policy/opps-policy">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opps-agent-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-agent/opps-agent">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opps-util-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-util/opps-util">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opps-gateway-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-gateway/opps-gateway">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opps-ticket-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-ticket/opps-ticket">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opps-invoice-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-invoice/opps-invoice">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="opps-pay-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/opps-pay/opps-pay">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/opps-v2/target/classes"/>
+        <property name="context-root" value="opps"/>
+    </wb-module>
+</project-modules>
