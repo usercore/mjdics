@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.priviledges.dao.UserGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.priviledges.domain.UserGroup" >
+    <id column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="enabled" property="enabled" jdbcType="BIT" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    group_id, group_name, memo, enabled, level, code
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select <include refid="Base_Column_List" /> from t_user_group where 1=1
+     <if test="example.level != null" >
+       and  level = #{example.level}
+      </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select   <include refid="Base_Column_List" /> from t_user_group where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_group where group_id = #{groupId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magic.promotion.priviledges.domain.UserGroup" >
+    insert into t_user_group (group_id, group_name, memo, 
+      enabled, level, code)
+    values (#{groupId,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=BIT}, #{level,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="countByExample" parameterType="map" resultType="java.lang.Integer" >
+    select count(*) from t_user_group where 1=1
+     <if test="example.level != null and example.level !=''" >
+       and  level = #{example.level,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.priviledges.domain.UserGroup" >
+    update t_user_group
+    <set >
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

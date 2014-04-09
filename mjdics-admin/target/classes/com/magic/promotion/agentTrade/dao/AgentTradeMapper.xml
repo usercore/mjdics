@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.agentTrade.dao.AgentTradeMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.agentTrade.domain.AgentTrade" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="TYPE" property="type" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.AgentTradeTypeEnum"
+					jdbcType="INTEGER" />
+    <result column="SERIAL" property="serial" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="REMAIN_MONEY" property="remainMoney" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, AGENT_ID, MONEY, TYPE, SERIAL, ADD_TIME, ADD_PERSON, REMAIN_MONEY, REMARK
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select <include refid="Base_Column_List" />  from agent_trade where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.type != null and example.type != ''" >
+        and type = #{example.type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.addPerson != null and example.addPerson != ''" >
+        and ADD_PERSON = #{example.addPerson,jdbcType=VARCHAR}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+  </select>
+  <insert id="insert" parameterType="com.magic.promotion.agentTrade.domain.AgentTrade" >
+    insert into agent_trade (ID, AGENT_ID, MONEY, 
+      TYPE, SERIAL, ADD_TIME, 
+      ADD_PERSON, REMAIN_MONEY, REMARK
+      )
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{serial,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addPerson,jdbcType=VARCHAR}, #{remainMoney,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <select id="countByExample" parameterType="com.magic.promotion.agentTrade.domain.AgentTrade" resultType="java.lang.Integer" >
+    select count(*) from agent_trade where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.type != null and example.type != ''" >
+        and type = #{example.type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.addPerson != null and example.addPerson != ''" >
+        and ADD_PERSON = #{example.addPerson,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.agentTrade.domain.AgentTrade" >
+    update agent_trade
+    <set >
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        MONEY = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="serial != null" >
+        SERIAL = #{serial,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="remainMoney != null" >
+        REMAIN_MONEY = #{remainMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="countSendMessage" parameterType="com.magic.promotion.agentTrade.domain.AgentTrade" resultType="java.lang.Integer" >
+	select count(*) From agent_trade where AGENT_ID in (select agent_id from agent where PARA_AGENT=#{agentId}) and TYPE = #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+  </select>
+</mapper>

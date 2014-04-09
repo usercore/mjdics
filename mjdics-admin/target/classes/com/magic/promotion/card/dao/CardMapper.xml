@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.card.dao.CardMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.card.domain.Card" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="APPLY_ID" property="applyId" jdbcType="INTEGER" />
+    <result column="MAKE_ID" property="makeId" jdbcType="INTEGER" />
+    <result column="ALIPAY_ID" property="alipayId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="CARD_TYPE_ID" property="cardTypeId" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.CardEnum"
+					jdbcType="INTEGER" />
+    <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />    
+    <result column="PRICE" property="price" jdbcType="DECIMAL" />
+    <result column="WEB_PRICE" property="webPrice" jdbcType="DECIMAL" />
+    <result column="FIRST_COMMISION" property="firstCommision" jdbcType="DECIMAL" />
+    <result column="SEC_COMMISION" property="secCommision" jdbcType="DECIMAL" />
+    <result column="SALE_COMMISSION" property="saleCommision" jdbcType="DECIMAL" />
+    <result column="SALE_CARD_COMMISSION" property="saleCardCommision" jdbcType="DECIMAL" />
+    <result column="PRIZE_COUNT" property="prizeCount" jdbcType="INTEGER" />    
+<!--      <result column="ALLOW_BACK" property="allowBack" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.IsAndNotEnum"
+					jdbcType="INTEGER" /> -->
+    <result column="LOTTERY_MONEY" property="lotteryMoney" jdbcType="DECIMAL" />
+    <result column="BET_COUNT" property="betCount" jdbcType="INTEGER" />
+    <result column="BUY_COUNT" property="buyCount" jdbcType="INTEGER" />
+    <result column="BET_ADDRESS" property="betAddress" jdbcType="VARCHAR" />
+    <result column="RESOURCE_ID" property="resourceId" jdbcType="VARCHAR" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_PERSION" property="updatePersion" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="BATCH" property="batch" jdbcType="VARCHAR" />
+    <result column="COMM_STATUS" property="commStatus" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.CommStatusEnum"
+					jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, APPLY_ID,MAKE_ID,ALIPAY_ID, CARD_ID, USER_ID,PASSWORD, CARD_TYPE_ID, STATUS, AGENT_ID,  
+    PRIZE_COUNT,  BUY_COUNT, ADD_PERSON, ADD_TIME, UPDATE_PERSION, UPDATE_TIME, BATCH,COMM_STATUS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from card where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.cardId != null and example.cardId != ''" >
+        and CARD_ID = #{example.cardId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.password != null and example.password != ''" >
+        and PASSWORD = #{example.password,jdbcType=VARCHAR}
+    </if>    
+    <if test="example.userId != null and example.userId != ''" >
+        and USER_ID = #{example.userId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.name != null and example.name != ''" >
+        and NAME = #{example.name,jdbcType=VARCHAR}
+    </if>    
+    <if test="example.cardTypeId != null and example.cardTypeId != ''" >
+        and CARD_TYPE_ID = #{example.cardTypeId,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.commStatus != null and example.commStatus != ''" >
+        and COMM_STATUS = #{example.commStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>    
+    <if test="example.applyId != null and example.applyId != ''" >
+        and APPLY_ID = #{example.applyId,jdbcType=INTEGER}
+    </if>
+    <if test="example.makeId != null and example.makeId != ''" >
+        and MAKE_ID = #{example.makeId,jdbcType=INTEGER}
+    </if>    
+    <if test="example.alipayId != null and example.alipayId != ''" >
+        and ALIPAY_ID = #{example.alipayId,jdbcType=VARCHAR}
+    </if>     
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from card where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from card where ID = #{id,jdbcType=INTEGER}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.magic.promotion.card.domain.Card" >
+    insert into card (ID, APPLY_ID,MAKE_ID,ALIPAY_ID,USER_ID, CARD_ID, 
+      PASSWORD, CARD_TYPE_ID, STATUS, 
+      AGENT_ID, PRIZE_COUNT,  
+      BUY_COUNT, 
+      ADD_PERSON, ADD_TIME, UPDATE_PERSION, 
+      UPDATE_TIME, BATCH)
+    values (#{id,jdbcType=INTEGER}, #{applyId,jdbcType=INTEGER},#{makeId,jdbcType=INTEGER},#{alipayId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{cardTypeId,jdbcType=INTEGER}, #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, 
+      #{agentId,jdbcType=VARCHAR}, #{prizeCount,jdbcType=INTEGER}, 
+      #{buyCount,jdbcType=INTEGER},
+      #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{updatePersion,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{batch,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.card.domain.Card" resultType="java.lang.Integer" >
+    select count(*) from card where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.cardId != null and example.cardId != ''" >
+        and CARD_ID = #{example.cardId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.password != null and example.password != ''" >
+        and PASSWORD = #{example.password,jdbcType=VARCHAR}
+    </if>    
+    <if test="example.userId != null and example.userId != ''" >
+        and USER_ID = #{example.userId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.name != null and example.name != ''" >
+        and NAME = #{example.name,jdbcType=VARCHAR}
+    </if>    
+    <if test="example.cardTypeId != null and example.cardTypeId != ''" >
+        and CARD_TYPE_ID = #{example.cardTypeId,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.commStatus != null and example.commStatus != ''" >
+        and COMM_STATUS = #{example.commStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>     
+    <if test="example.applyId != null and example.applyId != ''" >
+        and APPLY_ID = #{example.applyId,jdbcType=INTEGER}
+    </if>
+    <if test="example.makeId != null and example.makeId != ''" >
+        and MAKE_ID = #{example.makeId,jdbcType=INTEGER}
+    </if>    
+    <if test="example.alipayId != null and example.alipayId != ''" >
+        and ALIPAY_ID = #{example.alipayId,jdbcType=VARCHAR}
+    </if>     
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.card.domain.Card" >
+    update card
+    <set >
+      <if test="applyId != null" >
+        APPLY_ID = #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="makeId != null" >
+        MAKE_ID = #{makeId,jdbcType=INTEGER},
+      </if>   
+      <if test="alipayId != null" >
+        ALIPAY_ID = #{alipayId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="cardId != null" >
+        CARD_ID = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="cardTypeId != null" >
+        CARD_TYPE_ID = #{cardTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="commStatus != null" >
+        COMM_STATUS = #{commStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="prizeCount != null" >
+        PRIZE_COUNT = #{prizeCount,jdbcType=INTEGER},
+      </if>
+      <if test="buyCount != null" >
+        BUY_COUNT = #{buyCount,jdbcType=INTEGER},
+      </if>
+      <if test="updatePersion != null" >
+        UPDATE_PERSION = #{updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="batch != null" >
+        BATCH = #{batch,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+    <update id="updateByCard" parameterType="com.magic.promotion.card.domain.Card" >
+    update card
+    <set >
+      <if test="applyId != null" >
+        APPLY_ID = #{applyId,jdbcType=INTEGER},
+      </if>
+      <if test="makeId != null" >
+        MAKE_ID = #{makeId,jdbcType=INTEGER},
+      </if>    
+      <if test="alipayId != null" >
+        ALIPAY_ID = #{alipayId,jdbcType=VARCHAR},
+      </if>          
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="cardId != null" >
+        CARD_ID = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="commStatus != null" >
+        COMM_STATUS = #{commStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+            
+      <if test="prizeCount != null" >
+        PRIZE_COUNT =PRIZE_COUNT + #{prizeCount,jdbcType=INTEGER},
+      </if>
+      
+      <if test="buyCount != null" >
+        BUY_COUNT = #{buyCount,jdbcType=INTEGER},
+      </if>
+      
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePersion != null" >
+        UPDATE_PERSION = #{updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="batch != null" >
+        BATCH = #{batch,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where 
+    CARD_TYPE_ID=#{cardTypeId,jdbcType=INTEGER} and STATUS=0 ORDER BY id ASC limit #{num,jdbcType=INTEGER}
+  </update>
+  <select id="selectCardScope" resultType="map" parameterType="com.magic.promotion.card.domain.Card" >
+       select min(CARD_ID) as min,max(CARD_ID) as max from card where 
+       STATUS=#{status,typeHandler=com.magic.promotion.util.EnumTypeHandler} and APPLY_ID=#{applyId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCardTypeId" resultMap="BaseResultMap" parameterType="com.magic.promotion.card.domain.Card" >
+       SELECT CARD_TYPE_ID FROM card where 1=1
+    <if test="status != null and status != ''" >
+        and STATUS=#{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="agentId != null and agentId != ''" >
+        and AGENT_ID = #{agentId,jdbcType=VARCHAR}
+    </if>    
+        group by CARD_TYPE_ID
+  </select>  
+  
+    <update id="updateByExampleSelective"  parameterType="map" >
+    update card
+    <set >
+      <if test="record.applyId != null" >
+        APPLY_ID = #{record.applyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.makeId != null" >
+        MAKE_ID = #{record.makeId,jdbcType=INTEGER},
+      </if>    
+      <if test="record.alipayId != null" >
+        ALIPAY_ID = #{record.alipayId,jdbcType=VARCHAR},
+      </if>        
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardId != null" >
+        CARD_ID = #{record.cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.password != null" >
+        PASSWORD = #{record.password,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardTypeId != null" >
+        CARD_TYPE_ID = #{record.cardTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="record.commStatus != null" >
+        COMM_STATUS = #{record.commStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="record.agentId != null" >
+        AGENT_ID = #{record.agentId,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="record.prizeCount != null" >
+        PRIZE_COUNT = PRIZE_COUNT + #{record.prizeCount,jdbcType=INTEGER},
+      </if>               
+     
+      <if test="record.buyCount != null" >
+        BUY_COUNT = #{record.buyCount,jdbcType=INTEGER},
+      </if>
+     
+      <if test="record.updatePersion != null" >
+        UPDATE_PERSION = #{record.updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.batch != null" >
+        BATCH = #{record.batch,jdbcType=VARCHAR},
+      </if>      
+    </set>
+    where  1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.cardId != null and example.cardId != ''" >
+        and CARD_ID = #{example.cardId,jdbcType=VARCHAR}
+    </if>
+      <if test="example.password != null and example.password != ''" >
+        and PASSWORD = #{example.password,jdbcType=VARCHAR}
+      </if>   
+    <if test="example.userId != null and example.userId != ''" >
+        and USER_ID = #{example.userId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.name != null and example.name != ''" >
+        and NAME = #{example.name,jdbcType=VARCHAR}
+    </if>  
+    <if test="example.cardTypeId != null and example.cardTypeId != ''" >
+        and CARD_TYPE_ID = #{example.cardTypeId,jdbcType=VARCHAR}
+    </if>         
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>  
+    <if test="example.applyId!= null and example.applyId != ''" >
+        and APPLY_ID = #{example.applyId,jdbcType=INTEGER}
+    </if>      
+    <if test="example.makeId != null and example.makeId != ''" >
+        and MAKE_ID = #{example.makeId,jdbcType=INTEGER}
+    </if>
+    <if test="example.alipayId != null and example.alipayId != ''" >
+        and ALIPAY_ID = #{example.alipayId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.batch != null and example.batch != ''" >
+        and BATCH = #{example.batch,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.num != null and example.num != ''" >
+     ORDER BY id ASC limit #{example.num,jdbcType=INTEGER}   
+    </if>      
+  </update>
+  
+  <select id="cardByApplyId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="Base_Column_List" />  from card where make_id=#{makeId,jdbcType=INTEGER} group by make_id,apply_id
+  </select> 
+  
+   <select id="statCardByAgentId" resultType="map" parameterType="java.lang.String" >
+  select count(*) amount,ct.name from card c,user u,card_type ct where
+   c.user_id=u.phone  and COMM_STATUS=1  and c.card_type_id=ct.id and u.agent_id=#{agentId} group by card_type_id
+  </select>
+  
+  <select id="statCardBySecAgentId" resultType="java.math.BigDecimal" parameterType="java.lang.String" >
+     select CASE WHEN sum(ct.money) IS NULL THEN 0 ELSE sum(ct.money) END AS money from card c,card_type ct where USER_ID in 
+     (select phone from agent a,user u where u.AGENT_ID=a.agent_id and a.PARA_AGENT=#{agentId})  and COMM_STATUS=1 and ct.id=c.card_type_id
+  </select>
+  <select id="statCardBySalerAgentId" resultType="map" parameterType="java.lang.String" >
+     select CASE WHEN sum(ct.money) IS NULL THEN 0 ELSE sum(ct.money) END AS money ,count(distinct(user_id)) buyCardUserCount from card c,card_type ct where USER_ID in 
+     (select phone from agent a,user u where u.AGENT_ID=a.agent_id and a.AGENT_ID=#{agentId})  and COMM_STATUS=1 and ct.id=c.card_type_id
+  </select>
+  
+  <select id="selectByExample1" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from card where 1=1
+     <![CDATA[
+       AND PASSWORD <>'' 
+     ]]> 
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.cardId != null and example.cardId != ''" >
+        and CARD_ID = #{example.cardId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.password != null and example.password != ''" >
+        and PASSWORD = #{example.password,jdbcType=VARCHAR}
+    </if>    
+    <if test="example.userId != null and example.userId != ''" >
+        and USER_ID = #{example.userId,jdbcType=VARCHAR}
+    </if>
+    <!-- <if test="example.name != null and example.name != ''" >
+        and NAME = #{example.name,jdbcType=VARCHAR}
+    </if>     -->
+    <if test="example.cardTypeId != null and example.cardTypeId != ''" >
+        and CARD_TYPE_ID = #{example.cardTypeId,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.applyId != null and example.applyId != ''" >
+        and APPLY_ID = #{example.applyId,jdbcType=INTEGER}
+    </if>
+    <if test="example.makeId != null and example.makeId != ''" >
+        and MAKE_ID = #{example.makeId,jdbcType=INTEGER}
+    </if>    
+    <if test="example.alipayId != null and example.alipayId != ''" >
+        and ALIPAY_ID = #{example.alipayId,jdbcType=VARCHAR}
+    </if>     
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+
+  </select>  
+  
+  <select id="selectByExample2" resultMap="BaseResultMap" parameterType="map" >
+    select d.* from 
+	(SELECT c.* FROM apply_card ac right join card c on ac.id = c.APPLY_ID where 1=1
+    <if test="example.cardId != null and example.cardId != ''" >
+        and c.CARD_ID = #{example.cardId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.password != null and example.password != ''" >
+        and c.PASSWORD = #{example.password,jdbcType=VARCHAR}
+    </if>
+    <if test="applyStatus != null and applyStatus != ''" >
+        and ac.STATUS = #{applyStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+	 ) d
+	left join
+	(select a.* from agent a where
+	type = #{agengType,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+	)  e 
+    on e.AGENT_ID=d.AGENT_ID
+
+  </select>    
+   <select id="statCardByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	select sum(bet_count) bet_count,sum(buy_count) buy_count,sum(c.prize_count) prize_count 
+	From card c,CARD_TYPE ct where CARD_TYPE_ID=ct.id and user_id=#{userId}
+  </select>
+</mapper>

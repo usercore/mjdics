@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.user.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.user.domain.User" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="PASS" property="pass" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
+   <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.UserStatusEnum"
+					jdbcType="INTEGER" />
+    <result column="IS_ADD_COMMISION" property="isAddCommision" jdbcType="BIT" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, AGENT_ID,  PHONE, TYPE, LOGIN_TIME, STATUS, IS_ADD_COMMISION, ADD_PERSON, 
+    ADD_TIME,pass
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from user where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.pass != null and example.pass != ''" >
+        and pass = #{example.pass,jdbcType=VARCHAR}
+    </if> 
+    <if test="example.phone != null and example.phone != ''" >
+        and phone = #{example.phone,jdbcType=VARCHAR}
+    </if>      
+    <if test="example.status != null and example.status != ''" >
+        and Name = #{example.status,jdbcType=INTEGER}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>    
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.user.domain.User" >
+    insert into user (ID, AGENT_ID,  
+      PHONE, TYPE, LOGIN_TIME, 
+      STATUS, IS_ADD_COMMISION, ADD_PERSON, 
+      ADD_TIME,PASS)
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=VARCHAR},  
+      #{phone,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{loginTime,jdbcType=TIMESTAMP}, 
+      #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{isAddCommision,jdbcType=BIT}, #{addPerson,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP},#{pass,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.user.domain.User" resultType="java.lang.Integer" >
+    select count(*) from user where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>    
+     <if test="example.pass != null and example.pass != ''" >
+        and pass = #{example.pass,jdbcType=VARCHAR}
+    </if> 
+    <if test="example.phone != null and example.phone != ''" >
+        and phone = #{example.phone,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.status != null and example.status != ''" >
+        and Name = #{example.status,jdbcType=INTEGER}
+    </if>
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.user.domain.User" >
+    update user
+    <set >
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+       <if test="pass != null" >
+        pass = #{pass,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="loginTime != null" >
+        LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="isAddCommision != null" >
+        IS_ADD_COMMISION = #{isAddCommision,jdbcType=BIT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectUserBySecAgent" parameterType="map" resultMap="BaseResultMap" >
+   	select * From user  where AGENT_ID in (select AGENT_ID From agent where PARA_AGENT = #{agentId})
+   	  <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>  
+  </select>
+  <select id="countUserBySecAgent" parameterType="java.lang.String" resultType="java.lang.Integer" >
+   	select count(*) From user  where AGENT_ID in (select AGENT_ID From agent where PARA_AGENT = #{agentId})
+  </select>
+</mapper>

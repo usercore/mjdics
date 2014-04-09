@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.applyCard.dao.ApplyCardMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.applyCard.domain.ApplyCard" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+    <result column="AMOUNT" property="amount" jdbcType="INTEGER" />
+    <result column="CARD_SCOPE" property="cardScope" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.ApplyCardStatusEnum"
+					jdbcType="INTEGER" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_PERSION" property="updatePersion" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+	<resultMap id="BaseResultMap1" type="com.magic.promotion.applyCard.domain.ApplyCard" extends="BaseResultMap">
+		<result column="cardTypeName" property="cardTypeName" jdbcType="VARCHAR" />
+	</resultMap>  
+  
+  <sql id="Base_Column_List" >
+    ID, AGENT_ID, AMOUNT, CARD_SCOPE, STATUS, ADD_PERSON, ADD_TIME, UPDATE_PERSION, UPDATE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap1" parameterType="map" >
+    SELECT ac.*,ct.NAME as cardTypeName FROM apply_card  ac , card  c,card_type ct where ac.id=c.APPLY_ID and c.CARD_TYPE_ID=ct.id 
+    <if test="example.status != null and example.status != ''" >
+        and ac.STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.agentId != null and example.agentId != ''" >
+        and ac.AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>       
+        group by ct.NAME,c.APPLY_ID order by ac.add_time desc 
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>    
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" />  from apply_card  where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from apply_card where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magic.promotion.applyCard.domain.ApplyCard" useGeneratedKeys="true" keyProperty="id">
+    insert into apply_card (ID, AGENT_ID, AMOUNT, 
+      CARD_SCOPE, STATUS, ADD_PERSON, 
+      ADD_TIME, UPDATE_PERSION, UPDATE_TIME
+      )
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=VARCHAR}, #{amount,jdbcType=INTEGER}, 
+      #{cardScope,jdbcType=VARCHAR}, #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{addPerson,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updatePersion,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <select id="countByExample" parameterType="com.magic.promotion.applyCard.domain.ApplyCard" resultType="java.lang.Integer" >
+    select count(*) from apply_card where 1=1
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>    
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.applyCard.domain.ApplyCard" >
+    update apply_card
+    <set >
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="cardScope != null" >
+        CARD_SCOPE = #{cardScope,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePersion != null" >
+        UPDATE_PERSION = #{updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.betInfo.dao.BetInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.betInfo.domain.BetInfo" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="SCHEME_ID" property="schemeId" jdbcType="VARCHAR" />
+    <result column="SERIAL" property="serial" jdbcType="INTEGER" />
+    <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="GAME" property="game" jdbcType="VARCHAR" />
+    <result column="ISSUE" property="issue" jdbcType="VARCHAR" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="MANNER" property="manner" jdbcType="VARCHAR" />
+    <result column="MUTIPLE" property="mutiple" jdbcType="INTEGER" />
+    <result column="TICKET_SUM" property="ticketSum" jdbcType="INTEGER" />
+    <result column="NUM" property="num" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.BetStatusEnum"
+					jdbcType="INTEGER" />
+    <result column="BATCH" property="batch" jdbcType="VARCHAR" />
+    <result column="PROVINCE" property="province" jdbcType="VARCHAR" />
+    <result column="CITY" property="city" jdbcType="VARCHAR" />
+    <result column="TERMINAL_ID" property="terminalId" jdbcType="VARCHAR" />
+    <result column="AGENCY_ID" property="agencyId" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="HOTLINE_ID" property="hotlineId" jdbcType="VARCHAR" />
+    <result column="CPKEY" property="cpkey" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="NODE" property="node" jdbcType="VARCHAR" />
+    <result column="HOTLINE_TIME" property="hotlineTime" jdbcType="TIMESTAMP" />
+    <result column="PRIZE" property="prize" jdbcType="DECIMAL" />
+    <result column="PRIZE_STATUS" property="prizeStatus" typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.PrizeStatusEnum"
+					jdbcType="INTEGER" />
+   <result column="PRIZE_GRADE" property="prizeGrade" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, SCHEME_ID, SERIAL, CARD_ID, USER_ID, GAME, ISSUE, MONEY, MANNER, MUTIPLE, TICKET_SUM, 
+    NUM, STATUS, BATCH, PROVINCE, CITY, TERMINAL_ID, AGENCY_ID, ADD_TIME, HOTLINE_ID, 
+    CPKEY, STATION_ID, NODE, HOTLINE_TIME, PRIZE, PRIZE_STATUS,PRIZE_GRADE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap"  parameterType="map" >
+    select  <include refid="Base_Column_List" /> from bet_info where 1=1
+    <if test="example.cardId != null and example.cardId != ''" >
+        and CARD_ID = #{example.cardId,jdbcType=VARCHAR}
+    </if>    
+    <if test="example.userId != null and example.userId != ''" >
+        and USER_ID = #{example.userId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from bet_info
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from bet_info
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.betInfo.domain.BetInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into bet_info (ID, SCHEME_ID, SERIAL, 
+      CARD_ID, USER_ID, GAME, 
+      ISSUE, MONEY, MANNER, 
+      MUTIPLE, TICKET_SUM, NUM, 
+      STATUS, BATCH, PROVINCE, 
+      CITY, TERMINAL_ID, AGENCY_ID, 
+      ADD_TIME, HOTLINE_ID, CPKEY, 
+      STATION_ID, NODE, HOTLINE_TIME, 
+      PRIZE, PRIZE_STATUS,PRIZE_GRADE)
+    values (#{id,jdbcType=INTEGER}, #{schemeId,jdbcType=VARCHAR}, #{serial,jdbcType=INTEGER}, 
+      #{cardId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{game,jdbcType=VARCHAR}, 
+      #{issue,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, #{manner,jdbcType=VARCHAR}, 
+      #{mutiple,jdbcType=INTEGER}, #{ticketSum,jdbcType=INTEGER}, #{num,jdbcType=VARCHAR}, 
+      #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{batch,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{terminalId,jdbcType=VARCHAR}, #{agencyId,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{hotlineId,jdbcType=VARCHAR}, #{cpkey,jdbcType=VARCHAR}, 
+      #{stationId,jdbcType=VARCHAR}, #{node,jdbcType=VARCHAR}, #{hotlineTime,jdbcType=TIMESTAMP}, 
+      #{prize,jdbcType=DECIMAL}, #{prizeStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      #{prizeGrade,jdbcType=INTEGER})
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.betInfo.domain.BetInfo" resultType="java.lang.Integer" >
+    select count(*) from bet_info where 1=1
+    <if test="example.cardId != null and example.cardId != ''" >
+        and CARD_ID = #{example.cardId,jdbcType=VARCHAR}
+    </if>      
+    <if test="example.userId != null and example.userId != ''" >
+        and USER_ID = #{example.userId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>  
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.betInfo.domain.BetInfo" >
+    update bet_info
+    <set >
+      <if test="schemeId != null" >
+        SCHEME_ID = #{schemeId,jdbcType=VARCHAR},
+      </if>
+      <if test="serial != null" >
+        SERIAL = #{serial,jdbcType=INTEGER},
+      </if>
+      <if test="cardId != null" >
+        CARD_ID = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="game != null" >
+        GAME = #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        ISSUE = #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        MONEY = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="manner != null" >
+        MANNER = #{manner,jdbcType=VARCHAR},
+      </if>
+      <if test="mutiple != null" >
+        MUTIPLE = #{mutiple,jdbcType=INTEGER},
+      </if>
+      <if test="ticketSum != null" >
+        TICKET_SUM = #{ticketSum,jdbcType=INTEGER},
+      </if>
+      <if test="num != null" >
+        NUM = #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="batch != null" >
+        BATCH = #{batch,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        PROVINCE = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        CITY = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalId != null" >
+        TERMINAL_ID = #{terminalId,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyId != null" >
+        AGENCY_ID = #{agencyId,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hotlineId != null" >
+        HOTLINE_ID = #{hotlineId,jdbcType=VARCHAR},
+      </if>
+      <if test="cpkey != null" >
+        CPKEY = #{cpkey,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        STATION_ID = #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="node != null" >
+        NODE = #{node,jdbcType=VARCHAR},
+      </if>
+      <if test="hotlineTime != null" >
+        HOTLINE_TIME = #{hotlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prize != null" >
+        PRIZE = #{prize,jdbcType=DECIMAL},
+      </if>
+      <if test="prizeStatus != null" >
+        PRIZE_STATUS = #{prizeStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="prizeGrade != null" >
+        PRIZE_GRADE = #{prizeGrade,jdbcType=INTEGER},
+      </if>      
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="betInfoByIssue" parameterType="com.magic.promotion.betInfo.domain.BetInfo" resultMap="BaseResultMap">
+    SELECT issue FROM bet_info where ISSUE is not null
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>  
+    <if test="example.prizeStatus != null and example.prizeStatus != ''" >
+        and PRIZE_STATUS = #{example.prizeStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>  
+     group by ISSUE  
+  </select>  
+  
+    <update id="updateByExampleSelective" parameterType="map" >
+    update bet_info
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.schemeId != null" >
+        SCHEME_ID = #{record.schemeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serial != null" >
+        SERIAL = #{record.serial,jdbcType=INTEGER},
+      </if>
+      <if test="record.cardId != null" >
+        CARD_ID = #{record.cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.game != null" >
+        GAME = #{record.game,jdbcType=VARCHAR},
+      </if>
+      <if test="record.issue != null" >
+        ISSUE = #{record.issue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.money != null" >
+        MONEY = #{record.money,jdbcType=DECIMAL},
+      </if>
+      <if test="record.manner != null" >
+        MANNER = #{record.manner,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mutiple != null" >
+        MUTIPLE = #{record.mutiple,jdbcType=INTEGER},
+      </if>
+      <if test="record.ticketSum != null" >
+        TICKET_SUM = #{record.ticketSum,jdbcType=INTEGER},
+      </if>
+      <if test="record.num != null" >
+        NUM = #{record.num,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="record.batch != null" >
+        BATCH = #{record.batch,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        PROVINCE = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        CITY = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.terminalId != null" >
+        TERMINAL_ID = #{record.terminalId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.agencyId != null" >
+        AGENCY_ID = #{record.agencyId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.hotlineId != null" >
+        HOTLINE_ID = #{record.hotlineId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cpkey != null" >
+        CPKEY = #{record.cpkey,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stationId != null" >
+        STATION_ID = #{record.stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.node != null" >
+        NODE = #{record.node,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hotlineTime != null" >
+        HOTLINE_TIME = #{record.hotlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.prize != null" >
+        PRIZE = #{record.prize,jdbcType=DECIMAL},
+      </if>
+      <if test="record.prizeStatus != null" >
+        PRIZE_STATUS = #{record.prizeStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="record.prizeGrade != null" >
+        PRIZE_GRADE = #{record.prizeGrade,jdbcType=INTEGER},
+      </if>
+    </set>
+      where 1=1
+    <if test="example.userId != null and example.userId != ''" >
+        and USER_ID = #{example.userId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>
+    <if test="example.issue != null and example.issue != ''" >
+        and ISSUE = #{example.issue,jdbcType=VARCHAR}
+    </if>
+    <if test="example.hotlineId != null and example.hotlineId != ''" >
+        and HOTLINE_ID = #{example.hotlineId,jdbcType=VARCHAR}
+    </if>
+  </update>
+  
+
+</mapper>

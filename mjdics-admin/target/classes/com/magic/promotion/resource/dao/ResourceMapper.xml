@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.resource.dao.ResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.resource.domain.Resource" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="REG_URL" property="regUrl" jdbcType="VARCHAR" />
+    <result column="DETAIL_URL" property="detailUrl" jdbcType="VARCHAR" />    
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_PERSION" property="updatePersion" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, TYPE, REMARK, REG_URL, DETAIL_URL, ADD_PERSON, ADD_TIME, UPDATE_PERSION, UPDATE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from resource where 1=1
+    <if test="example.type != null and example.type != ''" >
+        and type = #{example.type,jdbcType=INTEGER}
+    </if>
+    <if test="example.addPerson != null and example.addPerson != ''" >
+        and ADD_PERSON = #{example.addPerson,jdbcType=VARCHAR}
+    </if>
+    <if test="example.remark != null and example.remark != ''" >
+        and REMARK = #{example.remark,jdbcType=VARCHAR}
+    </if>    
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from resource
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from resource
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.resource.domain.Resource" >
+    insert into resource (ID, TYPE, REMARK, 
+      REG_URL, DETAIL_URL, ADD_PERSON, ADD_TIME, 
+      UPDATE_PERSION, UPDATE_TIME)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{regUrl,jdbcType=VARCHAR},#{detailUrl,jdbcType=VARCHAR}, #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{updatePersion,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.resource.domain.Resource" resultType="java.lang.Integer" >
+    select count(*) from resource where 1=1
+    <if test="example.type != null and example.type != ''" >
+        and type = #{example.type,jdbcType=INTEGER}
+    </if>
+    <if test="example.addPerson != null and example.addPerson != ''" >
+        and ADD_PERSON = #{example.addPerson,jdbcType=VARCHAR}
+    </if>
+    <if test="example.remark != null and example.remark != ''" >
+        and REMARK = #{example.remark,jdbcType=VARCHAR}
+    </if>      
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.resource.domain.Resource" >
+    update resource
+    <set >
+      <if test="type != null" >
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="regUrl != null" >
+        REG_URL = #{regUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="detailUrl != null" >
+        DETAIL_URL = #{detailUrl,jdbcType=VARCHAR},
+      </if>      
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePersion != null" >
+        UPDATE_PERSION = #{updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

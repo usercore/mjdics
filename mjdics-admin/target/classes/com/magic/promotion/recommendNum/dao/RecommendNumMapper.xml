@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.recommendNum.dao.RecommendNumMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.recommendNum.domain.RecommendNum" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GAME" property="game" jdbcType="VARCHAR" />
+    <result column="ISSUE" property="issue" jdbcType="VARCHAR" />
+    <result column="MANNER" property="manner" jdbcType="VARCHAR" />
+    <result column="BET_NUM" property="betNum" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.ActiveAndInvalidEnum"
+					jdbcType="INTEGER" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID, GAME, ISSUE, MANNER, BET_NUM, STATUS, ADD_TIME, ADD_PERSON
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select <include refid="Base_Column_List" />  from recommend_num where 1=1
+    <if test="example.addPerson != null and example.addPerson != ''" >
+        and add_person = #{example.addPerson}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and status = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.game != null and example.game != ''" >
+        and game = #{example.game}
+    </if>
+     <if test="example.issue != null and example.issue != ''" >
+        and issue = #{example.issue}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from recommend_num where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from recommend_num where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magic.promotion.recommendNum.domain.RecommendNum" >
+    insert into recommend_num (ID, GAME, ISSUE, 
+      MANNER, BET_NUM, STATUS, 
+      ADD_TIME, ADD_PERSON)
+    values (#{id,jdbcType=INTEGER}, #{game,jdbcType=VARCHAR}, #{issue,jdbcType=VARCHAR}, 
+      #{manner,jdbcType=VARCHAR}, #{betNum,jdbcType=VARCHAR}, #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{addPerson,jdbcType=VARCHAR})
+  </insert>
+  <select id="countByExample" parameterType="com.magic.promotion.recommendNum.domain.RecommendNum" resultType="java.lang.Integer" >
+    select count(*) from recommend_num where 1=1
+     <if test="example.addPerson != null and example.addPerson != ''" >
+        and add_person = #{example.addPerson}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and status = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.game != null and example.game != ''" >
+        and game = #{example.game}
+    </if>
+     <if test="example.issue != null and example.issue != ''" >
+        and issue = #{example.issue}
+    </if>
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.recommendNum.domain.RecommendNum" >
+    update recommend_num
+    <set >
+      <if test="game != null" >
+        GAME = #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        ISSUE = #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="manner != null" >
+        MANNER = #{manner,jdbcType=VARCHAR},
+      </if>
+      <if test="betNum != null" >
+        BET_NUM = #{betNum,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

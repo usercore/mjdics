@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.chipinSerial.dao.ChipinSerialMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.chipinSerial.domain.ChipinSerial" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GAME" property="game" jdbcType="VARCHAR" />
+    <result column="ISSUE" property="issue" jdbcType="VARCHAR" />
+    <result column="AGENCY_ID" property="agencyId" jdbcType="VARCHAR" />
+    <result column="STATION_ID" property="stationId" jdbcType="VARCHAR" />
+    <result column="SERIAL" property="serial" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, GAME, ISSUE, AGENCY_ID, STATION_ID, SERIAL
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from chipin_serial where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>
+    <if test="example.issue != null and example.issue != ''" >
+        and ISSUE = #{example.issue,jdbcType=VARCHAR}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from chipin_serial
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from chipin_serial
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.chipinSerial.domain.ChipinSerial" >
+    insert into chipin_serial (ID, GAME, ISSUE, 
+      AGENCY_ID, STATION_ID, SERIAL
+      )
+    values (#{id,jdbcType=INTEGER}, #{game,jdbcType=VARCHAR}, #{issue,jdbcType=VARCHAR}, 
+      #{agencyId,jdbcType=VARCHAR}, #{stationId,jdbcType=VARCHAR}, #{serial,jdbcType=INTEGER}
+      )
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.chipinSerial.domain.ChipinSerial" resultType="java.lang.Integer" >
+    select count(*) from chipin_serial where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>
+    <if test="example.issue != null and example.issue != ''" >
+        and ISSUE = #{example.issue,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.chipinSerial.domain.ChipinSerial" >
+    update chipin_serial
+    <set >
+      <if test="game != null" >
+        GAME = #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        ISSUE = #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="agencyId != null" >
+        AGENCY_ID = #{agencyId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null" >
+        STATION_ID = #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="serial != null" >
+        SERIAL = #{serial,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

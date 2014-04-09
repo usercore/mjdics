@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.inviteCode.dao.InviteCodeMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.inviteCode.domain.InviteCode" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="INVITE_CODE" property="inviteCode" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.AgentTypeEnum"
+					jdbcType="INTEGER" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.ActiveEnum"
+					jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, AGENT_ID, PHONE, INVITE_CODE, TYPE,status, ADD_PERSON, ADD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select  <include refid="Base_Column_List" /> from invite_code where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.phone != null and example.phone != ''" >
+        and phone = #{example.phone,jdbcType=VARCHAR}
+    </if>
+    <if test="example.type != null and example.type != ''" >
+        and type = #{example.type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and status = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.addPerson != null and example.addPerson != ''" >
+        and ADD_PERSON = #{example.addPerson,jdbcType=VARCHAR}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from invite_code
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from invite_code
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.inviteCode.domain.InviteCode" >
+    insert into invite_code (ID, AGENT_ID, PHONE, 
+      INVITE_CODE, TYPE, ADD_PERSON, 
+      ADD_TIME)
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{inviteCode,jdbcType=VARCHAR}, #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{addPerson,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.inviteCode.domain.InviteCode" resultType="java.lang.Integer" >
+    select count(*) from invite_code where 1=1
+    <if test="example.agentId != null and example.agentId != ''" >
+        and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
+    </if>
+    <if test="example.phone != null and example.phone != ''" >
+        and phone = #{example.phone,jdbcType=VARCHAR}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and status = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.type != null and example.type != ''" >
+        and type = #{example.typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.addPerson != null and example.addPerson != ''" >
+        and ADD_PERSON = #{example.addPerson,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.inviteCode.domain.InviteCode" >
+    update invite_code
+    <set >
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="inviteCode != null" >
+        INVITE_CODE = #{inviteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="status != null" >
+        status = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

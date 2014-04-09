@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.sysParam.dao.SysParamMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.sysParam.domain.SysParam" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="VARCHAR" />
+    <result column="Value" property="value" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.SysParamStatusEnum"
+					jdbcType="INTEGER" />
+    <result column="Add_persion" property="addPersion" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, Name, Value, Remark, Status, Add_persion, ADD_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_param where 1=1
+    <if test="example.name != null and example.name != ''" >
+        and Name = #{example.name,jdbcType=VARCHAR}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_param
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_param
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.sysParam.domain.SysParam" >
+    insert into sys_param (ID, Name, Value, 
+      Remark, Status, Add_persion, 
+      ADD_TIME)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{addPersion,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.sysParam.domain.SysParam" resultType="java.lang.Integer" >
+    select count(*) from sys_param where 1=1
+    <if test="example.name != null and example.name != ''" >
+        and Name = #{example.name,jdbcType=VARCHAR}
+    </if>
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.sysParam.domain.SysParam" >
+    update sys_param
+    <set >
+      <if test="name != null" >
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        Value = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="addPersion != null" >
+        Add_persion = #{addPersion,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+   <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap" >
+    	select <include refid="Base_Column_List" /> from sys_param where name = #{name}
+	</select>
+	
+	<update id="updateByName" parameterType="com.magic.promotion.sysParam.domain.SysParam" >
+    update sys_param set Value = #{value}  where name = #{name}
+  </update>
+</mapper>

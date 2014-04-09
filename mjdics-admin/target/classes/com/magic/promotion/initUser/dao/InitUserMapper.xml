@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.initUser.dao.InitUserMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.initUser.domain.InitUser" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
+    <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+     <result column="status" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.ActiveEnum"
+					jdbcType="INTEGER" />
+	<result column="INVITE_STATUS" property="inviteStatus" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.InviteStatusEnum"
+					jdbcType="INTEGER" />				
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PARA_AGENT" property="paraAgent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, AGENT_ID, PHONE, ADD_PERSON, ADD_TIME, status,name,para_agent,INVITE_STATUS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.magic.promotion.initUser.domain.InitUser" >
+    select <include refid="Base_Column_List" />  from init_user where 1=1
+     <if test="example.agentId != null and example.agentId != ''"  >
+      and  agent_id = #{example.agentId }
+     </if>
+     <if test="example.phone != null and example.phone != ''"  >
+      and  phone = #{example.phone }
+     </if>
+     <if test="example.paraAgent != null and example.paraAgent != ''"  >
+      and  para_agent = #{example.paraAgent }
+     </if>
+      <if test="example.inviteStatus != null and example.inviteStatus != ''"  >
+      and  INVITE_STATUS = #{inviteStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+     </if>
+       order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" />  from init_user  where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from init_user where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magic.promotion.initUser.domain.InitUser" >
+    insert into init_user (ID, AGENT_ID, PHONE, 
+      ADD_PERSON, ADD_TIME, status,name,para_agent
+      )
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP},
+       #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},#{name},#{paraAgent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <select id="countByExample" parameterType="com.magic.promotion.initUser.domain.InitUser" resultType="java.lang.Integer" >
+    select count(*) from init_user where 1=1
+    
+    <if test="example.agentId != null and example.agentId != ''"  >
+      and  agent_id = #{example.agentId }
+     </if>
+     <if test="example.phone != null and example.phone != ''"  >
+      and  phone = #{example.phone }
+     </if>
+     <if test="example.paraAgent != null and example.paraAgent != ''"  >
+      and  para_agent = #{example.paraAgent }
+     </if>
+      <if test="example.inviteStatus != null and example.inviteStatus != ''"  >
+      and  INVITE_STATUS = #{example.inviteStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+     </if>
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.initUser.domain.InitUser" >
+    update init_user
+    <set >
+      <if test="agentId != null" >
+        AGENT_ID = #{agentId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+       <if test="inviteStatus != null" >
+        INVITE_STATUS = #{inviteStatus,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateStatusByPhone" parameterType="map" >
+    update init_user set status =  #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler} where phone=#{phone}
+  </update>
+</mapper>

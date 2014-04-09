@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.makeCard.dao.MakeCardMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.makeCard.domain.MakeCard" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="AMOUNT" property="amount" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.MakeCardStatusEnum"
+					jdbcType="INTEGER" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_PERSION" property="updatePersion" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+	<resultMap id="BaseResultMap1" type="com.magic.promotion.makeCard.domain.MakeCard" extends="BaseResultMap">
+		<result column="cardTypeName" property="cardTypeName" jdbcType="VARCHAR" />
+	</resultMap>  
+
+  <sql id="Base_Column_List" >
+    ID, AMOUNT, STATUS, ADD_PERSON, ADD_TIME, UPDATE_PERSION, UPDATE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+         select <include refid="Base_Column_List" /> from make_card where 1=1
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>    
+       order by add_time desc 
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from make_card
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from make_card
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.makeCard.domain.MakeCard"  useGeneratedKeys="true" keyProperty="id">
+    insert into make_card (ID, AMOUNT, STATUS, 
+      ADD_PERSON, ADD_TIME, UPDATE_PERSION, 
+      UPDATE_TIME)
+    values (#{id,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER},  #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, 
+      #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{updatePersion,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magic.promotion.makeCard.domain.MakeCard" >
+    insert into make_card
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="amount != null" >
+        AMOUNT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="addPerson != null" >
+        ADD_PERSON,
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME,
+      </if>
+      <if test="updatePersion != null" >
+        UPDATE_PERSION,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="addPerson != null" >
+        #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePersion != null" >
+        #{updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.magic.promotion.makeCard.domain.MakeCard" resultType="java.lang.Integer" >
+    select count(*) from make_card where 1=1
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>      
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.makeCard.domain.MakeCard" >
+    update make_card
+    <set >
+      <if test="amount != null" >
+        AMOUNT = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePersion != null" >
+        UPDATE_PERSION = #{updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

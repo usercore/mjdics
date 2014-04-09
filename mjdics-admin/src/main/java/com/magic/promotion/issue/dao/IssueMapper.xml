@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.issue.dao.IssueMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.issue.domain.Issue" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="GAME" property="game" jdbcType="VARCHAR" />
+    <result column="ISSUE" property="issue" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="AWARD_TIME" property="awardTime" jdbcType="TIMESTAMP" />
+    <result column="AWARD_CODE" property="awardCode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.IssueStatusEnum"
+					jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, GAME, ISSUE, ADD_TIME, START_TIME, END_TIME, AWARD_TIME, AWARD_CODE, STATUS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from issue where 1=1
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.issue != null and example.issue != ''" >
+        and ISSUE = #{example.issue,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>      
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from issue
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from issue
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magic.promotion.issue.domain.Issue" >
+    insert into issue (ID, GAME, ISSUE, 
+      ADD_TIME, START_TIME, END_TIME, 
+      AWARD_TIME, AWARD_CODE, STATUS
+      )
+    values (#{id,jdbcType=INTEGER}, #{game,jdbcType=VARCHAR}, #{issue,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{awardTime,jdbcType=TIMESTAMP}, #{awardCode,jdbcType=VARCHAR}, #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+      )
+  </insert>
+  <select id="countByExample" parameterType="com.magic.promotion.issue.domain.Issue" resultType="java.lang.Integer" >
+    select count(*) from issue where 1=1
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.issue != null and example.issue != ''" >
+        and ISSUE = #{example.issue,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>  
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update issue
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.game != null" >
+        GAME = #{record.game,jdbcType=VARCHAR},
+      </if>
+      <if test="record.issue != null" >
+        ISSUE = #{record.issue,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addTime != null" >
+        ADD_TIME = #{record.addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.startTime != null" >
+        START_TIME = #{record.startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endTime != null" >
+        END_TIME = #{record.endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.awardTime != null" >
+        AWARD_TIME = #{record.awardTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.awardCode != null" >
+        AWARD_CODE = #{record.awardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+    </set>
+    where 1=1
+    <if test="example.game != null and example.game != ''" >
+        and GAME = #{example.game,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.issue != null and example.issue != ''" >
+        and ISSUE = #{example.issue,jdbcType=VARCHAR}
+    </if>           
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.issue.domain.Issue" >
+    update issue
+    <set >
+      <if test="game != null" >
+        GAME = #{game,jdbcType=VARCHAR},
+      </if>
+      <if test="issue != null" >
+        ISSUE = #{issue,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardTime != null" >
+        AWARD_TIME = #{awardTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="awardCode != null" >
+        AWARD_CODE = #{awardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="currnetIssue" resultMap="BaseResultMap" parameterType="com.magic.promotion.issue.domain.Issue" >
+    select
+    <include refid="Base_Column_List" />
+    from issue where 1=1
+    <if test="game != null and game != ''" >
+        and GAME = #{game,jdbcType=VARCHAR}
+    </if>
+    <if test="cdate != null and cdate != ''" >
+     <![CDATA[
+        and START_TIME <= #{cdate,jdbcType=VARCHAR} and END_TIME >= #{cdate,jdbcType=VARCHAR} 
+        ]]> 
+    </if>     
+  </select>  
+  
+  <select id="curDateBeforeIssue" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from issue where 1=1
+    <if test="record.game != null and record.game != ''" >
+        and GAME = #{record.game,jdbcType=VARCHAR}
+    </if>
+    <if test="record.status != null and record.status != ''" >
+      and STATUS = #{record.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>    
+    <if test="cdate != null and cdate != ''" >
+     <![CDATA[
+        and END_TIME < #{cdate,jdbcType=VARCHAR} 
+        ]]> 
+    </if>     
+  </select>    
+  
+  
+</mapper>

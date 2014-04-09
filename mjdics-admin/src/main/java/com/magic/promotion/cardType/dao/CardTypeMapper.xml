@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.cardType.dao.CardTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.cardType.domain.CardType" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="PRICE" property="price" jdbcType="DECIMAL" />
+    <result column="WEB_PRICE" property="webPrice" jdbcType="DECIMAL" />
+    <result column="FIRST_COMMISION" property="firstCommision" jdbcType="DECIMAL" />
+    <result column="SEC_COMMISION" property="secCommision" jdbcType="DECIMAL" />
+    <result column="SALE_COMMISSION" property="saleCommision" jdbcType="DECIMAL" />    
+    <result column="SALE_CARD_COMMISSION" property="saleCardCommision" jdbcType="DECIMAL" />    
+    <result column="PRIZE_COUNT" property="prizeCount" jdbcType="INTEGER" />
+<!--      <result column="ALLOW_BACK" property="allowBack" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.IsAndNotEnum"
+					jdbcType="INTEGER" /> -->
+    <result column="LOTTERY_MONEY" property="lotteryMoney" jdbcType="DECIMAL" />
+    <result column="BET_COUNT" property="betCount" jdbcType="INTEGER" />
+    <result column="BET_ADDRESS" property="betAddress" jdbcType="VARCHAR" />
+    <result column="RESOURCE_ID" property="resourceId" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.CardTypeStatusEnum"
+					jdbcType="INTEGER" />
+    <result column="TYPE" property="type" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.CardTypeEnum"
+					jdbcType="INTEGER" />   					
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_PERSION" property="updatePersion" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    ID, MONEY,NAME, PRICE, WEB_PRICE, FIRST_COMMISION, SEC_COMMISION,SALE_COMMISSION,SALE_CARD_COMMISSION, PRIZE_COUNT, LOTTERY_MONEY, 
+    BET_COUNT, BET_ADDRESS, RESOURCE_ID, STATUS,TYPE, ADD_PERSON, ADD_TIME, UPDATE_PERSION, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from card_type where 1=1
+    <if test="example.name != null and example.name != ''" >
+        and NAME = #{example.name,jdbcType=VARCHAR}
+    </if>    
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.type != null and example.type != ''" >
+        and TYPE = #{example.type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>    
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>
+
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from card_type
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from card_type
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.magic.promotion.cardType.domain.CardType" >
+    insert into card_type (ID, MONEY,NAME, PRICE, 
+      WEB_PRICE, FIRST_COMMISION, SEC_COMMISION, SALE_COMMISSION,
+      SALE_CARD_COMMISSION,PRIZE_COUNT, LOTTERY_MONEY, BET_COUNT, 
+      BET_ADDRESS, RESOURCE_ID, STATUS, TYPE,
+      ADD_PERSON, ADD_TIME, UPDATE_PERSION, 
+      UPDATE_TIME)
+    values (#{id,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL},#{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{webPrice,jdbcType=DECIMAL}, #{firstCommision,jdbcType=DECIMAL}, #{secCommision,jdbcType=DECIMAL},  #{saleCommision,jdbcType=DECIMAL}, #{saleCardCommision,jdbcType=DECIMAL},
+      #{prizeCount,jdbcType=INTEGER}, #{lotteryMoney,jdbcType=DECIMAL}, #{betCount,jdbcType=INTEGER}, 
+      #{betAddress,jdbcType=VARCHAR}, #{resourceId,jdbcType=VARCHAR},#{status,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{updatePersion,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <select id="countByExample" parameterType="com.magic.promotion.cardType.domain.CardType" resultType="java.lang.Integer" >
+    select count(*) from card_type where 1=1
+    <if test="example.name != null and example.name != ''" >
+        and NAME = #{example.name,jdbcType=VARCHAR}
+    </if>     
+    <if test="example.status != null and example.status != ''" >
+        and STATUS = #{example.status,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+    <if test="example.type != null and example.type != ''" >
+        and TYPE = #{example.type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>      
+  </select>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.cardType.domain.CardType" >
+    update card_type
+    <set >
+      <if test="money != null" >
+        MONEY = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>      
+      <if test="price != null" >
+        PRICE = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="webPrice != null" >
+        WEB_PRICE = #{webPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="firstCommision != null" >
+        FIRST_COMMISION = #{firstCommision,jdbcType=DECIMAL},
+      </if>
+      <if test="secCommision != null" >
+        SEC_COMMISION = #{secCommision,jdbcType=DECIMAL},
+      </if>
+      <if test="saleCommision != null" >
+        SALE_COMMISSION = #{saleCommision,jdbcType=DECIMAL},
+      </if>     
+      <if test="saleCardCommision != null" >
+        SALE_CARD_COMMISSION = #{saleCardCommision,jdbcType=DECIMAL},
+      </if>         
+      <if test="prizeCount != null" >
+        PRIZE_COUNT = #{prizeCount,jdbcType=INTEGER},
+      </if>
+      <if test="lotteryMoney != null" >
+        LOTTERY_MONEY = #{lotteryMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="betCount != null" >
+        BET_COUNT = #{betCount,jdbcType=INTEGER},
+      </if>
+      <if test="betAddress != null" >
+        BET_ADDRESS = #{betAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceId != null" >
+        RESOURCE_ID = #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="type != null" >
+        TYPE = #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>      
+      <if test="addPerson != null" >
+        ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null" >
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatePersion != null" >
+        UPDATE_PERSION = #{updatePersion,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

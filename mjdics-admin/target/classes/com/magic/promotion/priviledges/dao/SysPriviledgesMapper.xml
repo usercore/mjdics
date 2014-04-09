@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.magic.promotion.priviledges.dao.SysPriviledgesMapper" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.priviledges.domain.SysPriviledges" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="text" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="folder" property="folder" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.MenuTypeEnum"
+					jdbcType="BIT" />
+    <result column="menu" property="menu" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.MenuTypeEnum"
+					jdbcType="BIT" />
+	<result column="anonymous" property="anonymous" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.MenuTypeEnum"
+					jdbcType="BIT" />
+    <result column="sequency" property="sequency" jdbcType="INTEGER" />
+    <result column="parent_id" property="_parentId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="editMap" type="com.magic.promotion.priviledges.domain.SysPriviledgesEdit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="text" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="folder" property="folder" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.MenuTypeEnum"
+					jdbcType="BIT" />
+    <result column="menu" property="menu" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.MenuTypeEnum"
+					jdbcType="BIT" />
+	<result column="anonymous" property="anonymous" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.MenuTypeEnum"
+					jdbcType="BIT" />
+    <result column="sequency" property="sequency" jdbcType="INTEGER" />
+    <result column="parent_id" property="_parentId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, url, folder, menu, anonymous, sequency, parent_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.magic.promotion.priviledges.domain.SysPriviledges" >
+    select <include refid="Base_Column_List" />  from t_sys_priviledges
+    
+    order by sequency desc
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from t_sys_priviledges  where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sys_priviledges  where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magic.promotion.priviledges.domain.SysPriviledges" >
+    insert into t_sys_priviledges (id, name, url, 
+      folder, menu, anonymous, sequency, 
+      parent_id)
+    values (#{id,jdbcType=INTEGER}, #{text,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{folder,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{menu,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{anonymous,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{sequency,jdbcType=INTEGER}, 
+      #{_parentId,jdbcType=INTEGER})
+  </insert>
+  <select id="countByExample" parameterType="com.magic.promotion.priviledges.domain.SysPriviledges" resultType="java.lang.Integer" >
+    select count(*) from t_sys_priviledges
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.priviledges.domain.SysPriviledges" >
+    update t_sys_priviledges
+    <set >
+      <if test="text != null" >
+        name = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="folder != null" >
+        folder = #{folder,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="menu != null" >
+        menu = #{menu,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="anonymous != null" >
+        anonymous = #{anonymous,typeHandler=com.magic.promotion.util.EnumTypeHandler},
+      </if>
+      <if test="sequency != null" >
+        sequency = #{sequency,jdbcType=INTEGER},
+      </if>
+      <if test="_parentId != null" >
+        parent_id = #{_parentId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectSysPriviledgesByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * From t_sys_priviledges where id in (select id from t_group_priviledges where group_ID=#{groupId})
+  </select>
+ <select id="selectEditByExample" resultMap="editMap" parameterType="com.magic.promotion.priviledges.domain.SysPriviledges" >
+    select  <include refid="Base_Column_List" />  from t_sys_priviledges
+    
+    order by sequency desc
+  </select>
+</mapper>
