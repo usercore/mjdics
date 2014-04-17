@@ -1,30 +1,25 @@
 package com.mjdics.account.dao;
 
+import com.magic.promotion.util.PagePO;
 import com.mjdics.account.domain.Account;
-import com.mjdics.account.domain.AccountExample;
+import com.mjdics.account.domain.Account;
+import com.mjdics.account.domain.AccountTrade;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface AccountMapper {
-    int countByExample(AccountExample example);
-
-    int deleteByExample(AccountExample example);
+    int countByExample(@Param("example")Account example);
 
     int deleteByPrimaryKey(Integer id);
 
     int insert(Account record);
 
-    int insertSelective(Account record);
-
-    List<Account> selectByExample(AccountExample example);
+    List<Account> selectByExample(@Param("example") Account example,@Param("page")PagePO page);
 
     Account selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") Account record, @Param("example") AccountExample example);
-
-    int updateByExample(@Param("record") Account record, @Param("example") AccountExample example);
-
-    int updateByPrimaryKeySelective(Account record);
-
     int updateByPrimaryKey(Account record);
+
 }
