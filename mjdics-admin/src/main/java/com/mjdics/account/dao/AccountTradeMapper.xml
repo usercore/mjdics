@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mjdics.account.dao.AccountTradeMapper" >
+  <resultMap id="BaseResultMap" type="com.mjdics.account.domain.AccountTrade" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="ACCOUNT_ID" property="accountId" jdbcType="VARCHAR" />
+    <result column="MONEY" property="money" jdbcType="DECIMAL" />
+    <result column="TYPE_ID" property="typeId" jdbcType="VARCHAR" />
+    <result column="SERIAL" property="serial" jdbcType="VARCHAR" />
+    <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
+    <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
+    <result column="REMAIN_MONEY" property="remainMoney" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID, ACCOUNT_ID, MONEY, TYPE_ID, SERIAL, ADD_TIME, ADD_PERSON, REMAIN_MONEY, REMARK
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
+    select <include refid="Base_Column_List" />  from account_trade
+    order by add_time desc
+      <if test="page != null and page.startRecord != -1" >
+      	limit ${page.startRecord},${page.pageSize}
+      </if>   
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select  <include refid="Base_Column_List" /> from account_trade where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from account_trade  where ID = #{id,jdbcType=INTEGER}
+  </delete>
+ 
+  <insert id="insert" parameterType="com.mjdics.account.domain.AccountTrade" >
+    insert into account_trade (ID, ACCOUNT_ID, MONEY, 
+      TYPE_ID, SERIAL, ADD_TIME, 
+      ADD_PERSON, REMAIN_MONEY, REMARK
+      )
+    values (#{id,jdbcType=INTEGER}, #{accountId,jdbcType=VARCHAR}, #{money,jdbcType=DECIMAL}, 
+      #{typeId,jdbcType=VARCHAR}, #{serial,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
+      #{addPerson,jdbcType=VARCHAR}, #{remainMoney,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <select id="countByExample" parameterType="com.mjdics.account.domain.AccountTrade" resultType="java.lang.Integer" >
+    select count(*) from account_trade
+  </select>
+  
+  <update id="updateByPrimaryKey" parameterType="com.mjdics.account.domain.AccountTrade" >
+    update account_trade
+    set ACCOUNT_ID = #{accountId,jdbcType=VARCHAR},
+      MONEY = #{money,jdbcType=DECIMAL},
+      TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      SERIAL = #{serial,jdbcType=VARCHAR},
+      ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
+      REMAIN_MONEY = #{remainMoney,jdbcType=DECIMAL},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
