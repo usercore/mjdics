@@ -18,6 +18,7 @@ public interface TradeTypeMapper {
 
     TradeType selectByPrimaryKey(Integer id);
 
+    TradeType selectByTypeId(String typeId);
 
     int updateByPrimaryKey(TradeType record);
 }

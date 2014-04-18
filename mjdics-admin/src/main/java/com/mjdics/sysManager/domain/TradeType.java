@@ -2,6 +2,8 @@ package com.mjdics.sysManager.domain;
 
 import java.util.Date;
 
+import com.magic.promotion.util.enumUtil.TradeTypeEnum;
+
 public class TradeType {
     private Integer id;
 
@@ -9,7 +11,7 @@ public class TradeType {
 
     private String typeId;
 
-    private Integer type;
+    private TradeTypeEnum type;
 
     private String addPerson;
 
@@ -39,15 +41,16 @@ public class TradeType {
         this.typeId = typeId == null ? null : typeId.trim();
     }
 
-    public Integer getType() {
-        return type;
-    }
 
-    public void setType(Integer type) {
-        this.type = type;
-    }
+    public TradeTypeEnum getType() {
+		return type;
+	}
 
-    public String getAddPerson() {
+	public void setType(TradeTypeEnum type) {
+		this.type = type;
+	}
+
+	public String getAddPerson() {
         return addPerson;
     }
 

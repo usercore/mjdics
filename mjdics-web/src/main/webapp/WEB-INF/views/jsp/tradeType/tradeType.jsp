@@ -151,7 +151,7 @@ var name = "";
 				width : 80,
 				formatter : function(value) {
 					<c:forEach var="tradeType" items="${tradeTypeEnum}" varStatus="i"> 
-						if ('${tradeType.value}' == value)
+						if ('${tradeType}' == value)
 							return '${tradeType.name}'; 
 					</c:forEach>
 				}
@@ -162,8 +162,6 @@ var name = "";
 			}
 		});
 	});
-	
-	
 </script>
 </head>
 
@@ -196,7 +194,6 @@ var name = "";
 					closed="true">
 					<form id="fmAdd" class="registerform"
 						action="${siteContext}/admin/tradeType/insertTradeType" method="post">
-						<input id="id" name="id" type="hidden" value="" />
 						<table width="100%" style="table-layout: fixed;">
 							<tbody>
 								<tr>
@@ -219,7 +216,7 @@ var name = "";
                                         <select name="type" id="type" datatype="*" nullmsg="请选择卡类型！"
 										errormsg="请选择互卡类型" style="height: 26px;">
 											<c:forEach items="${tradeTypeEnum}" var="tradeType">
-													<option value="${tradeType.value}">${tradeType.name}</option>
+													<option value="${tradeType}">${tradeType.name}</option>
 											</c:forEach>
 										</select>									
 								</td>
@@ -227,7 +224,7 @@ var name = "";
 								
 								<tr>
 									<td colspan="4" style="vertical-align:middle; text-align:center;"><input id="sub" name="Submit"
-										id="sub" type="submit" value="提交" /></td>
+										id="sub" type="submit"  value="提交" /></td>
 								</tr>
 							</tbody>
 						</table>
@@ -236,6 +233,20 @@ var name = "";
 				
 				
 <script type="text/javascript" src="${siteContext}/resources/js/Validform5.js"></script>
+	<script type="text/javascript">
+	$("#fmAdd").Validform({
+		ajaxPost:true,
+		tiptype : 2,
+		showAllError : true,
+		ignoreHidden : true,
+		postonce:true,
+		callback:function(data){
+			$('#dlg').dialog('close');
+			$('#tt').datagrid("reload");
+			$("#fmAdd").Validform({postonce:false});
+		}
+	});
+	</script>
 <!--弹成功窗口-->
 <div id="popDivLoading" class="mydiv" style="display:none;">数据加载中...<br/>
   <img src="${siteContext}/resources/images/load.gif" width="155" height="11" /><br/>请稍候<br/>

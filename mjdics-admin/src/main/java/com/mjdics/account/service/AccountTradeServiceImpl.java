@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 import com.magic.promotion.util.PagePO;
 import com.mjdics.account.dao.AccountTradeMapper;
 import com.mjdics.account.domain.AccountTrade;
+import com.mjdics.sysManager.domain.TradeType;
+import com.mjdics.sysManager.service.TradeTypeServiceImpl;
 
 @Service("accountTradeService")
 public class AccountTradeServiceImpl {
 	@Autowired
 	AccountTradeMapper accountTradeMapper;
+	@Autowired
+	TradeTypeServiceImpl tradeTypeService;
 	
 	public int countByExample(AccountTrade example) {
 		return accountTradeMapper.countByExample(example);
@@ -27,7 +31,14 @@ public class AccountTradeServiceImpl {
 	}
 
 	public List<AccountTrade> selectByExample(AccountTrade example, PagePO page) {
-		return accountTradeMapper.selectByExample(example, page);
+		List<AccountTrade> accountTradeList = accountTradeMapper.selectByExample(example, page);
+		for(int i=0;i<accountTradeList.size();i++){
+			AccountTrade accountTrade = accountTradeList.get(i);
+			TradeType tradeType = tradeTypeService.selectByTypeId(accountTrade.getTypeId());
+			accountTrade.setType(tradeType.getType());
+			accountTrade.setTypeName(tradeType.getName());
+		}
+		return accountTradeList;
 	}
 
 	public AccountTrade selectByPrimaryKey(Integer id) {

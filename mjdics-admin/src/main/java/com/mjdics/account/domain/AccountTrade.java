@@ -3,6 +3,8 @@ package com.mjdics.account.domain;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.magic.promotion.util.enumUtil.TradeTypeEnum;
+
 public class AccountTrade {
     private Integer id;
 
@@ -22,7 +24,18 @@ public class AccountTrade {
 
     private String remark;
 
-    public Integer getId() {
+    private TradeTypeEnum type;
+    private String typeName;
+    
+    public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public Integer getId() {
         return id;
     }
 
@@ -93,4 +106,14 @@ public class AccountTrade {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+	public TradeTypeEnum getType() {
+		return type;
+	}
+
+	public void setType(TradeTypeEnum type) {
+		this.type = type;
+	}
+    
+    
 }

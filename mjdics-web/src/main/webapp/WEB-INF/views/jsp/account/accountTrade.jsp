@@ -4,7 +4,7 @@
 <head>
 <base href="${siteContext}/resources/" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>易拍百万</title>
+<title>mjdics</title>
 <link rel="stylesheet" type="text/css" href="${siteContext}/resources/plugin/jquery-easyui-1.3.2/themes/gray/easyui.css" />
 <link rel="stylesheet" type="text/css" href="${siteContext}/resources/plugin/jquery-easyui-1.3.2/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="${siteContext}/resources/plugin/jquery-easyui-1.3.2/demo.css" />
@@ -66,20 +66,22 @@ var agentTyeps = new Array();
 			idField : 'id',
 			url : '',
 			columns : [ [ {
-				field : 'money',
+				field : 'serial',
 				title : '收入',
+				align : 'right',
 				width : 80,
-				formatter : function(value,row) {
-						if ('${row.type}' == 'INCOME')
-							return value; 
+				formatter : function(value,row,index) {
+						if (row.type == 'INCOME')
+							return row.money; 
 					
 				}
 			},{
 				field : 'money',
 				title : '支出',
+				align : 'right',
 				width : 80,
-				formatter : function(value,row) {
-					if ('${row.type}' == 'OUTCOME')
+				formatter : function(value,row,index) {
+					if (row.type == 'OUTCOME')
 						return value; 
 				
 			}
@@ -88,15 +90,13 @@ var agentTyeps = new Array();
 				title : '余额',
 				width : 80,
 			},{
-				field : 'type',
+				field : 'typeName',
 				title : '类型',
 				width : 80,
-				formatter : function(value) {
-					<c:forEach var="tradeTyep" items="${tradeTypeList}" varStatus="i"> 
-						if ('${tradeTyep.id}' == value)
-							return '${tradeTyep.name}'; 
-					</c:forEach>
-				}
+			},{
+				field : 'addPerson',
+				title : '添加人',
+				width : 80,
 			},{
 				field : 'addTime',
 				title : '时间',
@@ -113,20 +113,55 @@ var agentTyeps = new Array();
 			},
 			onBeforeLoad:function(param){
 				//type = '${type}';
-				$(this).datagrid('options').url = '${siteContext}/admin/agentTrade/selectAgentTrade';
+				$(this).datagrid('options').url = '${siteContext}/admin/accountTrade/selectAccountTrade';
 			}
 		});
 	});
 	
+	function initTrade(type){
+		if(type=='0'){
+			$('#newInCome').dialog('open').dialog('setTitle', '日常记账->收入');
+		}else if(type=='1'){
+			$('#newOutCome').dialog('open').dialog('setTitle', '日常记账->支出');
+		}
+	}
+	
+	function newOutComeTrade(){
+		$.ajax({
+			url : "${siteContext}/admin/account/trade",
+			type : "POST",
+			data : $('#outComeForm').serialize() ,
+			success : function(text) {
+				$('#newOutCome').dialog('close');
+				$.messager.alert('提示信息', text, 'info');
+				$('#tt').datagrid("reload");
+			}
+		});
+	}
+	function newInComeTrade(){
+		$.ajax({
+			url : "${siteContext}/admin/account/trade",
+			type : "POST",
+			data : $('#inComeForm').serialize() ,
+			success : function(text) {
+				$('#newInCome').dialog('close');
+				$.messager.alert('提示信息', text, 'info');
+				$('#tt').datagrid("reload");
+			}
+		});
+	}
+
 </script>
 </head>
 
 <body>
 				<div id="toolbar" style="padding: 5px; height: auto">
-		<!-- <div style="margin-bottom: 5px">
-				代销商Id: <input type="text" id="type" />
-			<a href="javascript:filterNode()" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">查询</a>
-				</div> -->
+				<div style="margin-bottom: 5px">
+					代销商Id: <input type="text" id="type" />
+					<a href="javascript:filterNode()" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">查询</a>
+					<a href="javascript:initTrade('0')" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">收入</a>
+					<a href="javascript:initTrade('1')" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">支出</a>
+				</div>
 </div>
 				
 	<table height=100% width="100%" cellSpacing=0 cellPadding=0 id=table0>
@@ -140,7 +175,110 @@ var agentTyeps = new Array();
 	</table>
 				<div id="background" class="background" style="display: none;"></div>
 				<div id="progressBar" class="progressBar" style="display: none;">数据加载中，请稍等...</div>
-				
+				<div id="newOutCome" class="easyui-dialog"
+						style="width: 550px; height: 300px; padding: 10px 0px 0px 20px"
+						closed="true">
+						<form id="outComeForm" class="registerform" method="post">
+							<table width="100%" style="table-layout: fixed;">
+								<tbody>
+									<tr>
+										<td class="need">*</td>
+										<td align="right">金额：</td>
+										<td>
+										  <input id="money" type="text" name="money" value="" class="inputxt" nullmsg="请输入金额" />
+										</td>
+										<td><div class="Validform_checktip"></div></td>
+									<tr>
+										<td colspan="4" height="3"></td>
+									</tr>
+									<tr>
+										<td class="need">*</td>
+										<td align="right">交易类型：</td>
+										<td>
+	                                        <select name="typeId" id="typeId" datatype="*" nullmsg="请选择交易类型！"
+											errormsg="请选择交易类型！" style="height: 26px;">
+												<c:forEach items="${outComeTypeList}" var="outComeType">
+														<option value="${outComeType.typeId}">${outComeType.name}</option>
+												</c:forEach>
+											</select>									
+										</td>
+										<td><div class="Validform_checktip"></div></td>
+									</tr>										
+									<tr>
+										<td colspan="4" height="3"></td>
+									</tr>
+									<tr>
+										<td class="need">*</td>
+										<td align="right">备注：</td>
+										<td>
+										  <textarea rows="10" cols="8" id="remark" name="remark" value="" class="inputxt" nullmsg="请输入金额"></textarea>
+										</td>
+										<td><div class="Validform_checktip"></div></td>
+									</tr>										
+									<tr>
+										<td colspan="4" height="3"></td>
+									</tr>
+	
+									<tr>
+										<td colspan="4" style="vertical-align:middle; text-align:center;"><input name="Submit"
+											type="button" onclick="newOutComeTrade();" value="确定" /></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>	
+					<div id="newInCome" class="easyui-dialog"
+						style="width: 550px; height: 300px; padding: 10px 0px 0px 20px"
+						closed="true">
+						<form id="inComeForm" class="registerform" method="post">
+							<table width="100%" style="table-layout: fixed;">
+								<tbody>
+									<tr>
+										<td class="need">*</td>
+										<td align="right">金额：</td>
+										<td>
+										  <input id="money" type="text" name="money" value="" class="inputxt" nullmsg="请输入金额" />
+										</td>
+										<td><div class="Validform_checktip"></div></td>
+									<tr>
+										<td colspan="4" height="3"></td>
+									</tr>
+									<tr>
+										<td class="need">*</td>
+										<td align="right">交易类型：</td>
+										<td>
+	                                        <select name="typeId" id="typeId" datatype="*" nullmsg="请选择交易类型！"
+											errormsg="请选择交易类型！" style="height: 26px;">
+												<c:forEach items="${inComeTypeList}" var="inComeType">
+														<option value="${inComeType.typeId}">${inComeType.name}</option>
+												</c:forEach>
+											</select>									
+										</td>
+										<td><div class="Validform_checktip"></div></td>
+									</tr>										
+									<tr>
+										<td colspan="4" height="3"></td>
+									</tr>
+									<tr>
+										<td class="need">*</td>
+										<td align="right">备注：</td>
+										<td>
+										  <textarea rows="10" cols="8" id="remark" name="remark" value="" class="inputxt" nullmsg="请输入金额"></textarea>
+										</td>
+										<td><div class="Validform_checktip"></div></td>
+									</tr>										
+									<tr>
+										<td colspan="4" height="3"></td>
+									</tr>
+	
+									<tr>
+										<td colspan="4" style="vertical-align:middle; text-align:center;"><input name="Submit"
+											type="button" onclick="newInComeTrade();" value="确定" /></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>	
 				
 	<script type="text/javascript" src="js/Validform5.js"></script>
 <!--弹成功窗口-->

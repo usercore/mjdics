@@ -51,7 +51,7 @@ public class TradeTypeController{
 		
 		tradeType.setAddTime(new Date());
 		tradeType.setAddPerson(user.getUserId());
-		
+		tradeType.setTypeId(java.util.UUID.randomUUID().toString().replace("-", ""));
 		tradeTypeService.insert(tradeType);
 		msg = "添加成功！"; 
 		map.put("info", msg);

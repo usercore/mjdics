@@ -37,4 +37,8 @@ public class TradeTypeServiceImpl {
 		return tradeTypeMapper.updateByPrimaryKey(record);
 	}
 
+	public TradeType selectByTypeId(String typeId) {
+		return tradeTypeMapper.selectByTypeId(typeId);
+	}
+
 }

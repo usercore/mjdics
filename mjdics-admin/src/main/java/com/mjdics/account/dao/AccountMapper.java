@@ -21,5 +21,11 @@ public interface AccountMapper {
     Account selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKey(Account record);
+    
+    Account selectByAccountId(String accountId);
+    
+    int updateAccountMoney(Account record);
+    
+    
 
 }

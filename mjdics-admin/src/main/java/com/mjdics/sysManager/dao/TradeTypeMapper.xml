@@ -5,7 +5,10 @@
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
     <result column="type_id" property="typeId" jdbcType="VARCHAR" />
-    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="type" property="type" 
+    				typeHandler="com.magic.promotion.util.EnumTypeHandler"
+					javaType="com.magic.promotion.util.enumUtil.TradeTypeEnum"
+					jdbcType="INTEGER" />    
     <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
     <result column="ADD_TIME" property="addTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -13,14 +16,30 @@
     ID, NAME, type_id, type, ADD_PERSON, ADD_TIME
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mjdics.sysManager.domain.TradeType" >
-    select <include refid="Base_Column_List" />  from trade_type
+    select <include refid="Base_Column_List" />  from trade_type where 1=1
+    <if test="example.type!=null">
+    	and type = #{example.type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
     order by add_time desc
       <if test="page != null and page.startRecord != -1" >
       	limit ${page.startRecord},${page.pageSize}
       </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+ 
+  
+  <select id="countByExample" parameterType="com.mjdics.sysManager.domain.TradeType" resultType="java.lang.Integer" >
+    select count(*) from trade_type where 1=1
+    <if test="example.type!=null">
+    	and type = #{example.type,typeHandler=com.magic.promotion.util.EnumTypeHandler}
+    </if>
+  </select>
+  
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select  <include refid="Base_Column_List" /> from trade_type where ID = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="selectByTypeId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select  <include refid="Base_Column_List" /> from trade_type where type_id = #{typeId}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from trade_type where ID = #{id,jdbcType=INTEGER}
@@ -31,18 +50,15 @@
       type, ADD_PERSON, ADD_TIME
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{typeId,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}
+      #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler}, #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}
       )
   </insert>
   
-  <select id="countByExample" parameterType="com.mjdics.sysManager.domain.TradeType" resultType="java.lang.Integer" >
-    select count(*) from trade_type
-  </select>
   <update id="updateByPrimaryKey" parameterType="com.mjdics.sysManager.domain.TradeType" >
     update trade_type
     set NAME = #{name,jdbcType=VARCHAR},
       type_id = #{typeId,jdbcType=VARCHAR},
-      type = #{type,jdbcType=INTEGER},
+      type = #{type,typeHandler=com.magic.promotion.util.EnumTypeHandler},
       ADD_PERSON = #{addPerson,jdbcType=VARCHAR},
       ADD_TIME = #{addTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=INTEGER}

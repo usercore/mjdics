@@ -28,9 +28,18 @@
       	limit ${page.startRecord},${page.pageSize}
       </if>   
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+ 
+  <select id="countByExample" parameterType="com.mjdics.account.domain.Account" resultType="java.lang.Integer" >
+    select count(*) from account 
+  </select>
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select  <include refid="Base_Column_List" /> from account  where ID = #{id,jdbcType=INTEGER}
   </select>
+  
+    <select id="selectByAccountId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select  <include refid="Base_Column_List" /> from account  where account_id = #{accountId}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from account  where ID = #{id,jdbcType=INTEGER}
   </delete>
@@ -47,9 +56,7 @@
       #{status,jdbcType=INTEGER}, #{addPerson,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
   </insert>
-  <select id="countByExample" parameterType="com.mjdics.account.domain.Account" resultType="java.lang.Integer" >
-    select count(*) from account 
-  </select>
+  
   <update id="updateByPrimaryKey" parameterType="com.mjdics.account.domain.Account" >
     update account
     set ACCOUNT_ID = #{accountId,jdbcType=VARCHAR},
@@ -66,5 +73,13 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       VERSION = #{version,jdbcType=INTEGER}
     where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateAccountMoney" parameterType="com.mjdics.account.domain.Account" >
+    update account
+    set MONEY = #{money,jdbcType=DECIMAL},
+      FREEZE_MONEY = #{freezeMoney,jdbcType=DECIMAL},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      VERSION = #{version}+1
+    where ACCOUNT_ID = #{accountId} and version = #{version}
   </update>
 </mapper>
