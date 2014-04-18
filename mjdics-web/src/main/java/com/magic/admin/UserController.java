@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.magic.promotion.agent.domain.Agent;
-import com.magic.promotion.user.domain.User;
+import com.magic.promotion.user.domain.User1;
 import com.magic.promotion.user.service.UserServiceImpl;
 import com.magic.promotion.util.MD5Util;
 import com.magic.promotion.util.enumUtil.AgentTypeEnum;
@@ -36,11 +36,11 @@ public class UserController{
 	
 	@Autowired
 	UserServiceImpl userService;
-	List<User> userList;
+	List<User1> userList;
 	
 	@RequestMapping(value = "insertUser", method = RequestMethod.POST)
 	@ResponseBody
-	public String insertUser(HttpSession session, User user) throws Exception {
+	public String insertUser(HttpSession session, User1 user) throws Exception {
 		Agent agent = (Agent)session.getAttribute("agent");
 		user.setLoginTime(new Date());
 		user.setAddTime(new Date());
@@ -56,8 +56,8 @@ public class UserController{
 	
 	@RequestMapping(value = "isExistUser")
 	@ResponseBody
-	public String isExistUser(User user){
-		userList = (List<User>) userService.selectByExample(user, null);
+	public String isExistUser(User1 user){
+		userList = (List<User1>) userService.selectByExample(user, null);
 		if (null != userList && userList.size() != 0) {
 			msg = "已存在，请重新输入";
 			return msg;
@@ -75,7 +75,7 @@ public class UserController{
 	}	
 	@RequestMapping(value = "selectUser")
 	@ResponseBody
-	public Map<String,Object> selectuser(User user,ModelMap map,HttpSession session,PagePO pagePo){
+	public Map<String,Object> selectuser(User1 user,ModelMap map,HttpSession session,PagePO pagePo){
 		Agent agent = (Agent)session.getAttribute("agent");
 		if(pagePo==null){
 			pagePo = new PagePO();
@@ -96,7 +96,7 @@ public class UserController{
 	}	
 	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
 	@ResponseBody
-	public 	String  updateUser(User user ){
+	public 	String  updateUser(User1 user ){
 		logger.info("update user");
 		userService.updateByPrimaryKeySelective(user);
 		msg = "修改成功！";

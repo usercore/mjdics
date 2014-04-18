@@ -23,7 +23,7 @@ table {margin: 0; padding: 0; border: 0;}
   <frame src="${siteContext}/admin/top" name="topFrame" scrolling="No" noresize="noresize" id="topFrame" title="topFrame" />
   <frameset rows="*" cols="225,*" frameborder="no">
     <frame src="${siteContext}/admin/menu" name="leftFrame" frameborder="no" scrolling="no" noresize="noresize" id="leftFrame" title="leftFrame" />
-    <frame src="${siteContext}/admin/agent/gotoStatTotalAgent" id="mainFrame" name="mainFrame" title="mainFrame" />
+    <frame src="" id="mainFrame" name="mainFrame" title="mainFrame" />
   </frameset>
 </frameset>
 <noframes><body>您的浏览器无法处理框架！

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.magic.promotion.user.dao.UserMapper" >
-  <resultMap id="BaseResultMap" type="com.magic.promotion.user.domain.User" >
+<mapper namespace="com.magic.promotion.User1.dao.User1Mapper1" >
+  <resultMap id="BaseResultMap" type="com.magic.promotion.User1.domain.User1" >
     <id column="ID" property="id" jdbcType="INTEGER" />
     <result column="AGENT_ID" property="agentId" jdbcType="VARCHAR" />
     <result column="PHONE" property="phone" jdbcType="VARCHAR" />
@@ -10,7 +10,7 @@
     <result column="LOGIN_TIME" property="loginTime" jdbcType="TIMESTAMP" />
    <result column="STATUS" property="status" 
     				typeHandler="com.magic.promotion.util.EnumTypeHandler"
-					javaType="com.magic.promotion.util.enumUtil.UserStatusEnum"
+					javaType="com.magic.promotion.util.enumUtil.User1StatusEnum"
 					jdbcType="INTEGER" />
     <result column="IS_ADD_COMMISION" property="isAddCommision" jdbcType="BIT" />
     <result column="ADD_PERSON" property="addPerson" jdbcType="VARCHAR" />
@@ -24,7 +24,7 @@
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="map" >
     select
     <include refid="Base_Column_List" />
-    from user where 1=1
+    from User where 1=1
     <if test="example.agentId != null and example.agentId != ''" >
         and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
     </if>
@@ -45,16 +45,16 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from user
+    from User
     where ID = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from user
+    delete from User
     where ID = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.magic.promotion.user.domain.User" >
-    insert into user (ID, AGENT_ID,  
+  <insert id="insert" parameterType="com.magic.promotion.User1.domain.User1" >
+    insert into User (ID, AGENT_ID,  
       PHONE, TYPE, LOGIN_TIME, 
       STATUS, IS_ADD_COMMISION, ADD_PERSON, 
       ADD_TIME,PASS)
@@ -64,8 +64,8 @@
       #{addTime,jdbcType=TIMESTAMP},#{pass,jdbcType=VARCHAR})
   </insert>
 
-  <select id="countByExample" parameterType="com.magic.promotion.user.domain.User" resultType="java.lang.Integer" >
-    select count(*) from user where 1=1
+  <select id="countByExample" parameterType="com.magic.promotion.User1.domain.User1" resultType="java.lang.Integer" >
+    select count(*) from User where 1=1
     <if test="example.agentId != null and example.agentId != ''" >
         and AGENT_ID = #{example.agentId,jdbcType=VARCHAR}
     </if>    
@@ -80,8 +80,8 @@
     </if>
   </select>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.user.domain.User" >
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.promotion.User1.domain.User1" >
+    update User
     <set >
       <if test="agentId != null" >
         AGENT_ID = #{agentId,jdbcType=VARCHAR},
@@ -107,13 +107,13 @@
     </set>
     where ID = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectUserBySecAgent" parameterType="map" resultMap="BaseResultMap" >
-   	select * From user  where AGENT_ID in (select AGENT_ID From agent where PARA_AGENT = #{agentId})
+  <select id="selectUser1BySecAgent" parameterType="map" resultMap="BaseResultMap" >
+   	select * From User  where AGENT_ID in (select AGENT_ID From agent where PARA_AGENT = #{agentId})
    	  <if test="page != null and page.startRecord != -1" >
       	limit ${page.startRecord},${page.pageSize}
       </if>  
   </select>
-  <select id="countUserBySecAgent" parameterType="java.lang.String" resultType="java.lang.Integer" >
-   	select count(*) From user  where AGENT_ID in (select AGENT_ID From agent where PARA_AGENT = #{agentId})
+  <select id="countUser1BySecAgent" parameterType="java.lang.String" resultType="java.lang.Integer" >
+   	select count(*) From User  where AGENT_ID in (select AGENT_ID From agent where PARA_AGENT = #{agentId})
   </select>
 </mapper>

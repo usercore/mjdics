@@ -86,7 +86,7 @@ function reloadF(){
 							<tr>
 								<td height="55" align="right" bgcolor="#FFFFFF"><img src="${siteContext}/resources/images/admin_user.jpg" width="100" height="29" /></td>
 								<td width="260" height="50" align="right" bgcolor="#FFFFFF">
-									<input id="agentId" name="agentId" class="easyui-validatebox inputxt" style="width:255px" data-options="required:true,validType:['length[4,12]']" />
+									<input id="userId" name="userId" class="easyui-validatebox inputxt" style="width:255px" data-options="required:true,validType:['length[4,12]']" />
 								</td>
 								<td></td>
 								<td></td>

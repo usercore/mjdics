@@ -25,19 +25,19 @@
 	<!-- define the SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="com.magic.util.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="typeAliasesPackage" value="com.magic.promotion.*.domain" /> 
+        <property name="typeAliasesPackage" value="com.magic.promotion.*.domain,com.mjdics.*.domain" /> 
     </bean>
     
     <!-- scan for mappers and let them be autowired -->
  	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-       <property name="basePackage" value="com.magic.promotion.*.dao" /> 
+       <property name="basePackage" value="com.magic.promotion.*.dao,com.mjdics.*.dao" /> 
     </bean> 
     
  	   
    	<!-- 事物管理 -->
 	<tx:annotation-driven transaction-manager="transactionManager"/>
     
-	<context:component-scan base-package="com.magic">
+	<context:component-scan base-package="com.*">
 	    <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 	</context:component-scan>
 	

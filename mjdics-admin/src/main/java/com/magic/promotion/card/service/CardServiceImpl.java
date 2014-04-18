@@ -24,7 +24,7 @@ import com.magic.promotion.exception.BusinessException;
 import com.magic.promotion.sysParam.SysParamUtil;
 import com.magic.promotion.sysParam.domain.SysParam;
 import com.magic.promotion.sysParam.service.SysParamServiceImpl;
-import com.magic.promotion.user.domain.User;
+import com.magic.promotion.user.domain.User1;
 import com.magic.promotion.user.service.UserServiceImpl;
 import com.magic.promotion.util.DateUtil;
 import com.magic.promotion.util.StringUtil;
@@ -105,7 +105,7 @@ public class CardServiceImpl  {
 		return num;
     }   
     @Transactional
-    public void freeBuyCard(User user) {
+    public void freeBuyCard(User1 user) {
 	    CardType cardType = new CardType();
 	    cardType.setStatus(CardTypeStatusEnum.Active);
 	    cardType.setType(CardTypeEnum.Charge);
@@ -144,7 +144,7 @@ public class CardServiceImpl  {
 	}    
     
     @Transactional
-    public String userBuyCard(Card card,CardType ct,User user) {
+    public String userBuyCard(Card card,CardType ct,User1 user) {
 		Integer num = card.getNum();
 		BigDecimal n = new BigDecimal(num);
 		AlipayRecords alipayRecords = new AlipayRecords();
@@ -237,7 +237,7 @@ public class CardServiceImpl  {
     	return cardMapper.updateByExampleSelective(record, example);
     }
 
-    public int activationCard(Card example,User user){
+    public int activationCard(Card example,User1 user){
     	example.setStatus(CardEnum.getCard);
     	List<Card> list = cardMapper.selectByExample2(example, ApplyCardStatusEnum.APPLY_SUCCESS,AgentTypeEnum.SALER);
 		if(list==null||list.size()>1||list.size()==0){
@@ -246,7 +246,7 @@ public class CardServiceImpl  {
 		Card c = list.get(0);
 		return addComm(c,user);
     }
-    public void payment(Card example,User user){
+    public void payment(Card example,User1 user){
     	List<Card> list = selectByExample(example,null);
 		if(list==null||list.size()==0){
 			throw new BusinessException("支付失败！");
@@ -258,7 +258,7 @@ public class CardServiceImpl  {
     }
     //@Transactional(rollbackFor=Exception.class)
     @Transactional
-    public int addComm(Card c,User user){
+    public int addComm(Card c,User1 user){
 		Card card = new Card();
 		card.setUserId(user.getPhone());
 		card.setStatus(CardEnum.Sell);
@@ -267,7 +267,7 @@ public class CardServiceImpl  {
 	    SysParam sysParam = sysParamService.selectByName(SysParamUtil.COM_TIME_LIMIT);
 	
 	    if((DateUtil.compareDate(user.getAddTime(),Integer.parseInt(sysParam.getValue())))>0){
-	    	User us = new User();
+	    	User1 us = new User1();
 	    	us.setIsAddCommision(false);
 	    	us.setId(user.getId());
 	    	userService.updateByPrimaryKeySelective(us);

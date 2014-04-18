@@ -22,6 +22,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.NestedServletException;
 
 import com.magic.promotion.agent.domain.Agent;
+import com.mjdics.account.domain.User;
 
   
 /** 
@@ -72,8 +73,8 @@ public class SessionFilter extends OncePerRequestFilter {
 		// 执行过滤
 		// 从session中获取登录者实体
 		if(validFlag){
-			Agent agent = (Agent) request.getSession().getAttribute("agent");
-			if (null == agent) {
+			User user = (User) request.getSession().getAttribute("user");
+			if (null == user) {
 				returnLoginPage(request, response);
 			}else{
 				filterChain.doFilter(request, response);

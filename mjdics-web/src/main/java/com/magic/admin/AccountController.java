@@ -44,14 +44,15 @@ import com.magic.promotion.util.enumUtil.AlipayTradeTypeEnum;
 import com.magic.util.AliPay;
 import com.magic.util.AlipayConfigProperties;
 import com.magic.util.PagePO;
+import com.mjdics.account.domain.User;
 
 
 @Controller
-@RequestMapping(value="admin/agent")
+@RequestMapping(value="admin/account")
 @Scope("prototype")
-public class AgentController{
+public class AccountController{
 	String msg ="";
-	private static final Logger logger = LoggerFactory.getLogger(AgentController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 	
 	@Autowired
 	AgentServiceImpl agentService;
@@ -64,7 +65,7 @@ public class AgentController{
 	
 	List<Agent> agentList;
 	
-	@RequestMapping(value = "insertAgent", method = RequestMethod.POST)
+/*	@RequestMapping(value = "insertAccount", method = RequestMethod.POST)
 	@ResponseBody
 	public String insertAgent(HttpSession session, Agent agent) throws Exception {
 		Agent agentLogin = (Agent)session.getAttribute("agent");
@@ -107,7 +108,7 @@ public class AgentController{
 		map.put("status", "Y");
 		return map;
 	}
-	
+*/	
 	@RequestMapping(value = "isExistAgent")
 	@ResponseBody
 	public String isExistAgent(Agent agent){
@@ -119,19 +120,19 @@ public class AgentController{
 		return msg;
 	}
 	
-	@RequestMapping(value = "gotoSelectAgent")
+	@RequestMapping(value = "gotoSelectAccount")
 	public String gotoSelectAgent(HttpSession session,ModelMap map,String type,String isAccount){
-		Agent agentLogin = (Agent)session.getAttribute("agent");
+		User user = (User)session.getAttribute("user");
 		map.put("agentTyepEnum", AgentTypeEnum.values());
 		map.put("type", type);
 		//一级代销商的业务员
-		if(type.equals(AgentTypeEnum.SALER.toString())&&AgentTypeEnum.FIRST_BUSS==agentLogin.getType()){
+		/*if(type.equals(AgentTypeEnum.SALER.toString())&&AgentTypeEnum.FIRST_BUSS==agentLogin.getType()){
 			return "agent/salerFirAgent";
 		}
 		//二级代销商的业务员
 		if(type.equals(AgentTypeEnum.SALER.toString())&&AgentTypeEnum.SEC_BUSS==agentLogin.getType()){
 			return "agent/salerSecAgent";
-		}
+		}*/
 		return "agent/agent";
 	}
 	
@@ -201,61 +202,7 @@ public class AgentController{
 		
 	}
 	
-	/**
-	 * 一级代销商查询业务员列表
-	 * @param agent
-	 * @param isAccount
-	 * @param map
-	 * @param session
-	 * @param page
-	 * @return
-	 */
-	@RequestMapping(value = "selectSalerByFirAgent")
-	@ResponseBody
-	public Map<String,Object> selectSalerByFirAgent(HttpSession session,PagePO page){
-		if(page==null){
-			page = new PagePO();
-			page.setCurrentPage(1);
-		}
-		Agent agentLogin = (Agent)session.getAttribute("agent");
-		
-		Map<String,Object> mapData = new HashMap<String,Object> ();
-		int totalCount = agentService.countSalerByFirAgentId(agentLogin.getAgentId());
-		page.initPage(totalCount);
-		agentList = agentService.selectSalerByFirAgentId(agentLogin.getAgentId(), page);
-		mapData.put("total", totalCount);
-		mapData.put("rows",  agentList);
-		return mapData;
-		
-	}
-	/**
-	 * 二级代销商查询业务员列表
-	 * @param agent
-	 * @param isAccount
-	 * @param map
-	 * @param session
-	 * @param page
-	 * @return
-	 */
-	@RequestMapping(value = "selectSalerBySecAgent")
-	@ResponseBody
-	public Map<String,Object> selectSalerBySecAgent(HttpSession session,PagePO page){
-		if(page==null){
-			page = new PagePO();
-			page.setCurrentPage(1);
-		}
-		Agent agentLogin = (Agent)session.getAttribute("agent");
-		Agent agent = new Agent();
-		agent.setParaAgent(agentLogin.getAgentId());
-		Map<String,Object> mapData = new HashMap<String,Object> ();
-		int totalCount = agentService.countByExample(agent);
-		page.initPage(totalCount);
-		agentList = agentService.selectByExample(agent, page);
-		mapData.put("total", totalCount);
-		mapData.put("rows",  agentList);
-		return mapData;
-		
-	}
+	
 	@RequestMapping(value = "updateAgent")
 	@ResponseBody
 	public 	String  updateAgent(Agent agent ){
@@ -324,92 +271,5 @@ public class AgentController{
 		return "agent/agent";
 		
 	}
-	/*@RequestMapping(value = "gotoStatAgent")
-	public String gotoStatAgent(){
-		return "agent/statAgent";
-		
-	}
-	@RequestMapping(value = "statAgent")
-	@ResponseBody
-	public Map<String,Object> statAgent(HttpSession session){
-		Map<String,Object> mapData = new HashMap<String,Object> ();
-		Agent agent = (Agent)session.getAttribute("agent");
-		agentList = agentService.statAgent(agent.getAgentId());
-		mapData.put("total", agentList.size());
-		mapData.put("rows",  agentList);
-		return mapData;
-	}
-	
-	@RequestMapping(value = "gotoStatTotalAgent")
-	public String gotoStatTotalAgent(HttpSession session){
-		Agent loginAgent = (Agent)session.getAttribute("agent");
-		if(loginAgent.getType()==AgentTypeEnum.FIRST_BUSS){
-			return "agent/stat/statTotalFirstAgent";
-		}
-		if(loginAgent.getType()==AgentTypeEnum.SEC_BUSS){
-			return "agent/stat/statTotalSecAgent";
-		}
-		
-		return null;
-		
-	}
-	@RequestMapping(value = "statTotalFirstAgent")
-	@ResponseBody
-	public Map<String,Object> statTotalFirstAgent(HttpSession session){
-		Map<String,Object> mapData = new HashMap<String,Object> ();
-		Agent loginAgent = (Agent)session.getAttribute("agent");
-		Agent agent = agentService.statTotalAgent(loginAgent.getAgentId());
-		agent.setCommission(loginAgent.getCommission());
-		List<Agent> agentList = new ArrayList<Agent>();
-		agentList.add(agent);
-		mapData.put("total", 1);
-		mapData.put("rows",  agentList);
-		return mapData;
-	}
-	@RequestMapping(value = "statTotalSecAgent")
-	@ResponseBody
-	public Map<String,Object> statTotalSecAgent(HttpSession session){
-		Map<String,Object> mapData = new HashMap<String,Object> ();
-		Agent loginAgent = (Agent)session.getAttribute("agent");
-		Agent agent = agentService.statTotalAgent(loginAgent.getAgentId());
-		agent.setCommission(loginAgent.getCommission());
-		List<Agent> agentList = new ArrayList<Agent>();
-		agentList.add(agent);
-		mapData.put("total", 1);
-		mapData.put("rows",  agentList);
-		return mapData;
-	}
-	
-	@RequestMapping(value = "gotoStatSecAgent")
-	public String gotoStatSecAgent(){
-		return "agent/statSecAgent";
-		
-	}
-	@RequestMapping(value = "statSecAgent")
-	@ResponseBody
-	public Map<String,Object> statSecAgent(HttpSession session){
-		Map<String,Object> mapData = new HashMap<String,Object> ();
-		Agent agent = (Agent)session.getAttribute("agent");
-		agentList = agentService.statSecAgent(agent.getAgentId());
-		mapData.put("total", agentList.size());
-		mapData.put("rows",  agentList);
-		return mapData;
-	}
-	@RequestMapping(value = "statSalerInfo")
-	@ResponseBody
-	public Map<String,Object> statSalerInfo(HttpSession session,String agentId){
-		Map<String,Object> mapData = new HashMap<String,Object> ();
-		Agent agent = (Agent)session.getAttribute("agent");
-		
-		
-		
-		agentList = agentService.statSalerInfo(agent.getAgentId());
-		
-		mapData.put("total", agentList.size());
-		mapData.put("rows",  agentList);
-		return mapData;
-	}*/
-	
-	
 	
 }

@@ -15,17 +15,17 @@ import com.magic.promotion.exception.BusinessException;
 import com.magic.promotion.initUser.service.InitUserServiceImpl;
 import com.magic.promotion.inviteCode.domain.InviteCode;
 import com.magic.promotion.inviteCode.service.InviteCodeServiceImpl;
-import com.magic.promotion.user.dao.UserMapper;
-import com.magic.promotion.user.domain.User;
+import com.magic.promotion.user.dao.UserMapper1;
+import com.magic.promotion.user.domain.User1;
 import com.magic.promotion.util.MD5Util;
 import com.magic.promotion.util.enumUtil.ActiveEnum;
 import com.magic.promotion.util.enumUtil.UserStatusEnum;
 import com.magic.util.PagePO;
 
-@Service("userService")
+@Service("userService1")
 public class UserServiceImpl  {
 	@Autowired
-	UserMapper userMapper;
+	UserMapper1 userMapper;
 	@Autowired
 	InviteCodeServiceImpl inviteCodeService;
 	@Autowired
@@ -34,7 +34,7 @@ public class UserServiceImpl  {
 	@Autowired
 	AgentServiceImpl agentService;
 	
-	public int countByExample(User example){
+	public int countByExample(User1 example){
     	return userMapper.countByExample(example);
     }
 
@@ -42,29 +42,29 @@ public class UserServiceImpl  {
 	   return userMapper.deleteByPrimaryKey(id);
    }
 
-    public int insert(User record){
+    public int insert(User1 record){
     	return userMapper.insert(record);
     }
 
 
-    public List<User> selectByExample(@Param("example") User example,@Param("page")PagePO page){
-    	List<User> userList = userMapper.selectByExample(example, page);
+    public List<User1> selectByExample(@Param("example") User1 example,@Param("page")PagePO page){
+    	List<User1> userList = userMapper.selectByExample(example, page);
     	return userList;
     }
 
-    public int updateByPrimaryKeySelective(User record){
+    public int updateByPrimaryKeySelective(User1 record){
     	return userMapper.updateByPrimaryKeySelective(record);
     }
 
 
-	public User selectByPrimaryKey(Integer id) {
+	public User1 selectByPrimaryKey(Integer id) {
 		return userMapper.selectByPrimaryKey(id);
 	}
     
-	public List<User> selectUserBySecAgent(String agentId,PagePO page){
-		List<User> userList = userMapper.selectUserBySecAgent(agentId,page);
+	public List<User1> selectUserBySecAgent(String agentId,PagePO page){
+		List<User1> userList = userMapper.selectUserBySecAgent(agentId,page);
 		for(int i=0;i<userList.size();i++){
-			User user = userList.get(i);
+			User1 user = userList.get(i);
 			Agent agent = agentService.selectByAgentId(user.getAgentId());
 			user.setAgentName(agent.getName());
 			
@@ -76,7 +76,7 @@ public class UserServiceImpl  {
 		return  userMapper.countUserBySecAgent(agentId);
 	}
 	@Transactional
-	public void regUser(User user)throws BusinessException{
+	public void regUser(User1 user)throws BusinessException{
 		InviteCode invite = new InviteCode();
 		invite.setPhone(user.getPhone());
 		invite.setStatus(ActiveEnum.NOT_ACTIVE);
