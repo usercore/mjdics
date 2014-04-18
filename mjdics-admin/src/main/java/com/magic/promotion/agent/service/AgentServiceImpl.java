@@ -26,7 +26,7 @@ import com.magic.promotion.inviteCode.domain.InviteCode;
 import com.magic.promotion.inviteCode.service.InviteCodeServiceImpl;
 import com.magic.promotion.sysParam.SysParamUtil;
 import com.magic.promotion.sysParam.service.SysParamServiceImpl;
-import com.magic.promotion.user.domain.User;
+import com.magic.promotion.user.domain.User1;
 import com.magic.promotion.user.service.UserServiceImpl;
 import com.magic.promotion.util.enumUtil.ActiveEnum;
 import com.magic.promotion.util.enumUtil.AgentTradeTypeEnum;
@@ -269,7 +269,7 @@ public class AgentServiceImpl  {
 			initUser.setParaAgent(secAgent.getAgentId());
 			agent.setInitUserCount(agent.getInitUserCount()+initUserService.countByExample(initUser));//用户数
 			
-			List<User> userList = userService.selectUserBySecAgent(secAgent.getAgentId(),null);
+			List<User1> userList = userService.selectUserBySecAgent(secAgent.getAgentId(),null);
 			agent.setUserCount(agent.getUserCount()+userList.size());//用户数量
 			
 			AgentTrade agentTrade = new AgentTrade();
@@ -298,7 +298,7 @@ public class AgentServiceImpl  {
 			initUser.setParaAgent(secAgent.getAgentId());
 			secAgent.setInitUserCount(initUserService.countByExample(initUser));//用户数
 			
-			List<User> userList = userService.selectUserBySecAgent(secAgent.getAgentId(),null);
+			List<User1> userList = userService.selectUserBySecAgent(secAgent.getAgentId(),null);
 			secAgent.setUserCount(userList.size());//用户数量
 			
 			AgentTrade agentTrade = new AgentTrade();
@@ -334,9 +334,9 @@ public class AgentServiceImpl  {
 			initUser.setInviteStatus(InviteStatusEnum.INVITE);
 			agent.setInviteUserCount(agent.getInviteUserCount()+initUserService.countByExample(initUser));
 			
-			User user = new User();
+			User1 user = new User1();
 			user.setAgentId(bussAgent.getAgentId());
-			List<User> userList = userService.selectByExample(user, null);
+			List<User1> userList = userService.selectByExample(user, null);
 			agent.setUserCount(agent.getUserCount()+userList.size());//用户数量
 			
 			AgentTrade agentTrade = new AgentTrade();
@@ -368,9 +368,9 @@ public class AgentServiceImpl  {
 			initUser.setInviteStatus(InviteStatusEnum.INVITE);
 			bussAgent.setInviteUserCount(initUserService.countByExample(initUser));
 			
-			User user = new User();
+			User1 user = new User1();
 			user.setAgentId(bussAgent.getAgentId());
-			List<User> userList = userService.selectByExample(user, null);
+			List<User1> userList = userService.selectByExample(user, null);
 			bussAgent.setUserCount(userList.size());//用户数量
 			
 			AgentTrade agentTrade = new AgentTrade();
@@ -396,7 +396,7 @@ public class AgentServiceImpl  {
 			agent.setParaAgent(secAgent.getAgentId());
 			secAgent.setBussCount(countByExample(agent));//业务员数量
 			
-			List<User> userList = userService.selectUserBySecAgent(secAgent.getAgentId(),null);
+			List<User1> userList = userService.selectUserBySecAgent(secAgent.getAgentId(),null);
 			secAgent.setUserCount(userList.size());//用户数量
 			
 			secAgent.setUserByCardMoney(cardService.statCardBySecAgentId(secAgent.getAgentId()));
@@ -419,9 +419,9 @@ public class AgentServiceImpl  {
 		initUser.setInviteStatus(InviteStatusEnum.INVITE);
 		agent.setInviteUserCount(initUserService.countByExample(initUser));
 
-		User user = new User();
+		User1 user = new User1();
 		user.setAgentId(agentId);
-		List<User> userList = userService.selectByExample(user, null);
+		List<User1> userList = userService.selectByExample(user, null);
 		agent.setUserCount(userList.size());// 用户数量
 
 		AgentTrade agentTrade = new AgentTrade();

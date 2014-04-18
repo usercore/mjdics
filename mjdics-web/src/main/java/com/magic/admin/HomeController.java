@@ -43,6 +43,8 @@ import com.magic.promotion.util.MD5Util;
 import com.magic.promotion.util.enumUtil.AlipayTradeStatusEnum;
 import com.magic.util.ConfigInfoProperties;
 import com.magic.util.PagePO;
+import com.mjdics.account.domain.User;
+import com.mjdics.account.service.UserServiceImpl;
 
 
 @Controller
@@ -53,7 +55,7 @@ public class HomeController{
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@Autowired
-	AgentServiceImpl agentService;
+	UserServiceImpl userService;
 	@Autowired
 	AlipayRecordsServiceImpl alipayRecordsService;
 	
@@ -64,7 +66,7 @@ public class HomeController{
 		return "manager/login";
 	}
 	@RequestMapping(value = "login")
-	public String login(Agent agent,String valCode,HttpSession session,ModelMap map){
+	public String login(User agent,String valCode,HttpSession session,ModelMap map){
 		String validateC = (String) session.getAttribute("validateCode"); 
 			// 判断验证码 
 			if (validateC==null) {
@@ -75,9 +77,9 @@ public class HomeController{
 				map.put("msg", "验证码输入错误！");
 				return "manager/login";
 			}
-		List<Agent> list = agentService.selectByExample(agent, null);
+		List<User> list = userService.selectByExample(agent, null);
 		if(list!=null&&list.size()==1){
-			session.setAttribute("agent", list.get(0));
+			session.setAttribute("user", list.get(0));
 			return "index/index";
 		}
 		return "manager/login";
@@ -106,7 +108,7 @@ public class HomeController{
 		return "manager/login";
 	}
 	
-	@RequestMapping(value = "aliNotify")
+	/*@RequestMapping(value = "aliNotify")
 	public void aliNotify(HttpServletResponse response,HttpServletRequest request) throws BusinessException, Exception{
 		logger.info("recharge notice");
 		String initSecret = ConfigInfoProperties.getSystemParam("initSecret");
@@ -127,13 +129,13 @@ public class HomeController{
 		String sign = new String(request.getParameter("sign").getBytes("ISO-8859-1"),"UTF-8");
 		
 		AlipayRecords alipayRecords = alipayRecordsService.selectByPrimaryKey(Integer.parseInt(out_trade_no));
-		Agent agent = agentService.selectByAgentId(alipayRecords.getForeignKey());
+		Agent agent = userService.selectByAgentId(alipayRecords.getForeignKey());
 		if(alipayRecords.getStatus().equals(AlipayTradeStatusEnum.SUCCESS)){
 			out.println("success");	
 		}else if(MD5Util.genMd5String(AESKit.encrypt(rechargeChannelCode+tradeNo, initSecret)).equalsIgnoreCase(sign)){//验证成功
 			logger.info("AlipayNotify.verify");
 			if(trade_status.equals("TRADE_FINISHED")||trade_status.equals("TRADE_SUCCESS")){
-				agentService.recharge(alipayRecords.getMoney(),agent);
+				userService.recharge(alipayRecords.getMoney(),agent);
 				alipayRecords.setStatus(AlipayTradeStatusEnum.SUCCESS);
 				alipayRecords.setTradeNo(tradeNo);
 				alipayRecordsService.updateByPrimaryKeySelective(alipayRecords);
@@ -146,5 +148,5 @@ public class HomeController{
 		}else{//验证失败
 			out.println("fail");
 		}
-	}
+	}*/
 }

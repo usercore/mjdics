@@ -20,7 +20,7 @@ import com.magic.promotion.card.service.CardServiceImpl;
 import com.magic.promotion.exception.BusinessException;
 import com.magic.promotion.issue.domain.Issue;
 import com.magic.promotion.issue.service.IssueServiceImpl;
-import com.magic.promotion.user.domain.User;
+import com.magic.promotion.user.domain.User1;
 import com.magic.promotion.util.enumUtil.BetStatusEnum;
 import com.magic.promotion.util.enumUtil.CardEnum;
 import com.magic.promotion.util.enumUtil.IssueStatusEnum;
@@ -73,7 +73,7 @@ public class BetInfoServiceImpl  {
 		return betInfoMapper.selectByPrimaryKey(id);
 	}
 	
-	public BetInfo lotteryCustom(User user,BetInfo betInfo) {
+	public BetInfo lotteryCustom(User1 user,BetInfo betInfo) {
 		Issue issue = issueService.currnetIssue(betInfo.getGame());	
 		if(issue==null){
 			throw new BusinessException("已过系统投注时间！");

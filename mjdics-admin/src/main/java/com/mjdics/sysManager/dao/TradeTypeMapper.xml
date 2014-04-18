@@ -12,7 +12,7 @@
   <sql id="Base_Column_List" >
     ID, NAME, type_id, type, ADD_PERSON, ADD_TIME
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mjdics.sysManager.domain.TradeTypeExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.mjdics.sysManager.domain.TradeType" >
     select <include refid="Base_Column_List" />  from trade_type
     order by add_time desc
       <if test="page != null and page.startRecord != -1" >
@@ -35,7 +35,7 @@
       )
   </insert>
   
-  <select id="countByExample" parameterType="com.mjdics.sysManager.domain.TradeTypeExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.mjdics.sysManager.domain.TradeType" resultType="java.lang.Integer" >
     select count(*) from trade_type
   </select>
   <update id="updateByPrimaryKey" parameterType="com.mjdics.sysManager.domain.TradeType" >

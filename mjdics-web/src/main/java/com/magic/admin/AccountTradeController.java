@@ -28,11 +28,11 @@ import com.magic.util.PagePO;
 
 
 @Controller
-@RequestMapping(value="admin/agentTrade")
+@RequestMapping(value="admin/accountTrade")
 @Scope("prototype")
-public class AgentTradeController{
+public class AccountTradeController{
 	String tip ="";
-	private static final Logger logger = LoggerFactory.getLogger(AgentTradeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AccountTradeController.class);
 	
 	@Autowired
 	AgentTradeServiceImpl agentTradeService;

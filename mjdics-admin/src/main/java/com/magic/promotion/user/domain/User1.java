@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.magic.promotion.util.enumUtil.UserStatusEnum;
 
-public class User {
+public class User1 {
     private Integer id;
 
     private String agentId;

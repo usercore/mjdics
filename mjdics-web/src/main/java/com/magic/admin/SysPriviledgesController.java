@@ -26,6 +26,7 @@ import com.magic.promotion.priviledges.domain.SysPriviledgesEdit;
 import com.magic.promotion.priviledges.service.GroupPriviledgesServiceImpl;
 import com.magic.promotion.priviledges.service.SysPriviledgesServiceImpl;
 import com.magic.util.PagePO;
+import com.mjdics.account.domain.User;
 
 
 @Controller
@@ -116,9 +117,9 @@ public class SysPriviledgesController{
 	@RequestMapping(value = "selectSysPriviledgesByGroupId")
 	@ResponseBody
 	public List<SysPriviledges> selectSysPriviledgesByGroupId(SysPriviledges sysPriviledges,ModelMap map,HttpSession session){
-		Agent agent = (Agent)session.getAttribute("agent");
-		sysPriviledgesList = sysPriviledgesService.selectSysPriviledgesByGroupId(agent.getGroupId());
-		List<SysPriviledges> sysPriviledgesChlList = sysPriviledgesService.selectSysPriviledgesByGroupId(agent.getGroupId());
+		User user = (User)session.getAttribute("user");
+		sysPriviledgesList = sysPriviledgesService.selectSysPriviledgesByGroupId(user.getGroupId());
+		List<SysPriviledges> sysPriviledgesChlList = sysPriviledgesService.selectSysPriviledgesByGroupId(user.getGroupId());
 		for(int i=0;i<sysPriviledgesList.size();i++){
 			SysPriviledges sysPriviledgesPar = sysPriviledgesList.get(i);
 			
