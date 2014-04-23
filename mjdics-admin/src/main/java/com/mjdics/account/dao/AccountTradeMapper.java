@@ -20,4 +20,6 @@ public interface AccountTradeMapper {
     AccountTrade selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKey(AccountTrade record);
+    
+    List<AccountTrade> statTradeByTime(AccountTrade accountTrade);
 }

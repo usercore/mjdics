@@ -34,6 +34,14 @@
 <script type="text/javascript" src="${siteContext}/resources/js/validatebox_extend.js"></script>
 <script type="text/javascript" src="${siteContext}/resources/js/dateFormat.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="${siteContext}/resources/js/JSCalendar/src/css/jscal2.css" />
+    <link rel="stylesheet" type="text/css" href="${siteContext}/resources/js/JSCalendar/src/css/border-radius.css" />
+    <link rel="stylesheet" type="text/css" href="${siteContext}/resources/js/JSCalendar/src/css/steel/steel.css" />
+    <link rel="stylesheet" type="text/css" href="${siteContext}/css/page.css" />
+
+    <script type="text/javascript" src="${siteContext}/resources/js/JSCalendar/src/js/jscal2.js"></script>
+    <script type="text/javascript" src="${siteContext}/resources/js/JSCalendar/src/js/lang/cn.js"></script>
+
 						          
 <script type="text/javascript">
 
@@ -66,6 +74,10 @@ var agentTyeps = new Array();
 			idField : 'id',
 			url : '',
 			columns : [ [ {
+				field : 'typeName',
+				title : '项目',
+				width : 80,
+			},{
 				field : 'serial',
 				title : '收入',
 				align : 'right',
@@ -88,10 +100,6 @@ var agentTyeps = new Array();
 			},{
 				field : 'remainMoney',
 				title : '余额',
-				width : 80,
-			},{
-				field : 'typeName',
-				title : '类型',
 				width : 80,
 			},{
 				field : 'addPerson',
@@ -150,15 +158,30 @@ var agentTyeps = new Array();
 			}
 		});
 	}
-
+	function exportExcel(){
+		var startTime = $("#startTime").val();
+		var endTime = $("#endTime").val();
+		var str="${siteContext}/admin/accountTrade/exportAccountTradeByTime?startTime="+startTime+"&endTime="+endTime+"&t="+ Math.random();
+		window.location.href=encodeURI(str);
+	}
 </script>
 </head>
 
 <body>
 				<div id="toolbar" style="padding: 5px; height: auto">
 				<div style="margin-bottom: 5px">
-					代销商Id: <input type="text" id="type" />
-					<a href="javascript:filterNode()" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">查询</a>
+					开始时间：
+			                 <input type="text" id="startTime" size="12" value="${requestScope.startTime}"/>
+			                 至：<input type="text" id="endTime" size="12" value="${requestScope.endTime}"/>
+                            <script type="text/javascript">
+                                var cal = Calendar.setup({
+                                    onSelect: function(cal) { cal.hide() },
+                                    showTime: true
+                                });
+                                cal.manageFields("startTime", "startTime", "%Y-%m-%d");
+                                cal.manageFields("endTime","endTime","%Y-%m-%d");
+                            </script>			
+					<a href="javascript:exportExcel()" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">导出excel</a>
 					<a href="javascript:initTrade('0')" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">收入</a>
 					<a href="javascript:initTrade('1')" class="easyui-linkbutton" iconCls="icon-search" style="padding:2px, 10px">支出</a>
 				</div>

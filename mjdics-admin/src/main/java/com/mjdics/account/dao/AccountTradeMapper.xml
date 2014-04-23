@@ -57,4 +57,19 @@
       REMARK = #{remark,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=INTEGER}
   </update>
+  <select id="statTradeByTime" parameterType="com.mjdics.account.domain.AccountTrade" resultMap="BaseResultMap">
+	select sum(money) money,TYPE_ID from account_trade where 1=1
+	<if test="startTime != null and startTime != ''" >
+     <![CDATA[
+        and add_Time >= #{startTime,jdbcType=VARCHAR} 
+        ]]> 
+    </if>  
+    <if test="endTime != null and endTime != ''" >
+     <![CDATA[
+        and add_time <= #{endTime,jdbcType=VARCHAR} 
+        ]]> 
+    </if>    
+	 group by TYPE_ID
+  </select>
+  
 </mapper>
